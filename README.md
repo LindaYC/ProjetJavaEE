@@ -14,4 +14,9 @@ une fois vos modifications sont fini et votre projet build bien vous pousser vot
 git pull ENTRER ( pour avoir les modifications des autres => résoudre les conflits s'il ya des conflits)
 git push -u origin master ENTRER ( on va tous travailler sur la branche master)
 
+un petit tutoriel sur l'utilisation de git
+
+http://rogerdudler.github.io/git-guide/index.fr.html
+
+
 
