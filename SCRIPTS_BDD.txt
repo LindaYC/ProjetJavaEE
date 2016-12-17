@@ -1,6 +1,10 @@
 -- SCRIPTS CREATION DES TABLES
 -- version 1 => a valider avec la toute la team  
+
 -- comment
+
+--Bahaa
+
 CREATE TABLE T_MENU(
 ID_MENU NUMBER(10) NOT NULL,
 NOM VARCHAR(50) NOT NULL,
