@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- was: <?xml version="1.0" encoding="UTF-8"?> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+<!--
+<bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    p:driverClassName="${jdbc.driverClassName}"
+    p:url="${jdbc.url}"
+    p:username="${jdbc.username}"
+    p:password="${jdbc.password}" 
+    
+/>
+-->
+
+
+
+<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+
+<property name="jndiName" value="lacuillere" />
+
+<property name="lookupOnStartup" value="false"/>
+
+<property name="cache" value="true"/>
+
+<property name="proxyInterface" value="javax.sql.DataSource"/>
+
+</bean>
+
+
+
+
+    <bean id="readManager" class="Manager.ReadManager">
+    <property name="userDao"  ref="userDao"/>  
+        
+    </bean>
+    
+    <bean id="userDao" class="Dao.UserDao">
+    <property name="dataSource"  ref="dataSource"/>  
+        
+    </bean>
+
+</beans>
