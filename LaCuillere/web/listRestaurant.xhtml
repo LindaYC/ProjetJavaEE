@@ -1,9 +1,16 @@
-<!-- Include du header -->
-<ui:include src="header.xhtml" 
- xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"/>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:include src="head.xhtml"/>
+    
+    
+<h:body class="home">
+    <div class="site-wrapper animsition" data-animsition-in="fade-in" data-animsition-out="fade-out">
+        <ui:include src="header.xhtml" />
 
 <div class="page-wrapper">
 
@@ -16,11 +23,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-3">
-                            <p><span class="primary-color"><strong>3</strong></span> Restaurants trouv� !</div>
-                        </p>
+                            <p><span class="primary-color"><strong>3</strong></span> Restaurants trouv� !</p></div>
+                        
                         <div class="col-sm-9">
                             <select class="custom-select pull-right">
-                                <option selected>Pertinence</option>
+                                <option selected="true" >Pertinence</option>
                                 <option value="1">Promotion</option>
                                 <option value="2">Note</option>
                                 <option value="3">Popularit�</option>
@@ -41,27 +48,27 @@
                                     <div class="sidebar-title white-txt">
                                         <h6>Affiner la recherche</h6> <i class="fa fa-cutlery pull-right"></i> </div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control search-field" placeholder="Rechercher votre menu"> <span class="input-group-btn"> 
+                                        <input type="text" class="form-control search-field" placeholder="Rechercher votre menu"/> <span class="input-group-btn"> 
                                  <button class="btn btn-secondary search-btn" type="button"><i class="fa fa-search"></i></button> 
                                  </span> </div>
                                     <form>
                                         <ul>
                                             <li>
                                                 <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"> <span class="custom-control-indicator"></span> <span class="custom-control-description">Fran�ais</span> </label>
+                                                    <input type="checkbox" class="custom-control-input"/> <span class="custom-control-indicator"></span> <span class="custom-control-description">Fran�ais</span> </label>
                                             </li>
                                             <li>
                                                 <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"> <span class="custom-control-indicator"></span> <span class="custom-control-description">Indien</span> </label>
+                                                    <input type="checkbox" class="custom-control-input"/> <span class="custom-control-indicator"></span> <span class="custom-control-description">Indien</span> </label>
                                             </li>
                                             <li>
                                                 <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"> <span class="custom-control-indicator"></span> <span class="custom-control-description">Italien</span> </label>
+                                                    <input type="checkbox" class="custom-control-input"/> <span class="custom-control-indicator"></span> <span class="custom-control-description">Italien</span> </label>
                                             </li>
 
                                             <li>
                                                 <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"> <span class="custom-control-indicator"></span> <span class="custom-control-description">Halal</span> </label>
+                                                    <input type="checkbox" class="custom-control-input"/> <span class="custom-control-indicator"></span> <span class="custom-control-description">Halal</span> </label>
                                             </li>
                                         </ul>
                                     </form>
@@ -77,7 +84,7 @@
                                 </div>
                                 <div class="widget-body">
                                     <div class="range-slider m-b-10"> <span id="ex2CurrentSliderValLabel"> Filtrer par prix :<span id="ex2SliderVal"><strong>35</strong></span>?</span>
-                                        <br>
+                                        <br/>
                                         <input id="ex2" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="35" /> </div>
                                 </div>
                             </div>
@@ -88,7 +95,7 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
                                         <div class="entry-logo">
-                                            <a class="img-fluid" href="#"><img src="images/resto2.jpg" alt="Food logo"></a>
+                                            <a class="img-fluid" href="#"><img src="images/resto2.jpg" alt="Food logo"/></a>
                                         </div>
                                         <!-- end:Logo -->
                                         <div class="entry-dscr">
@@ -115,7 +122,7 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
                                         <div class="entry-logo">
-                                            <a class="img-fluid" href="#"><img src="images/resto5.jpg" alt="Food logo"></a>
+                                            <a class="img-fluid" href="#"><img src="images/resto5.jpg" alt="Food logo"/></a>
                                         </div>
                                         <!-- end:Logo -->
                                         <div class="entry-dscr">
@@ -142,5 +149,11 @@
                     </div>
                 </div>
             </section>
-<!-- Include du footer -->        
-<ui:include src="footer.xhtml"/>
+<!-- Include du footer -->  
+</div>
+    <ui:include src="footer.xhtml"/>
+</div>
+    
+    
+</h:body>
+</html>

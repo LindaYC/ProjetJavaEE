@@ -1,10 +1,16 @@
-<!-- Include du header -->
-<ui:include src="header.xhtml"
- xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	/>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:include src="head.xhtml"/>
+    
+    
+<h:body class="home">
+    <div class="site-wrapper animsition" data-animsition-in="fade-in" data-animsition-out="fade-out">
+        <ui:include src="header.xhtml" />
 
 <div class="page-wrapper">
 
@@ -27,52 +33,52 @@
                             <form>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nom *</label>
-                                    <input class="form-control" type="text" value="Nom du restaurant" id="example-text-input"> 
+                                    <input class="form-control" type="text" value="Nom du restaurant" id="example-text-input"/> 
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Adresse *</label>
-                                    <input class="form-control" type="text" value="Adresse du restaurant" id="example-text-input"> 
+                                    <input class="form-control" type="text" value="Adresse du restaurant" id="example-text-input"/> 
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Telephone</label>
-                                    <input class="form-control" type="tel" value="01 02 03 04 05" id="example-tel-input"> 
+                                    <input class="form-control" type="tel" value="01 02 03 04 05" id="example-tel-input"/> 
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email *</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Saisir email"> 
+                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Saisir email"/> 
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Heure Ouverture</label>
-                                     <input type="time" class="form-control" id="Heure" placeholder="Heure">
+                                     <input type="time" class="form-control" id="Heure" placeholder="Heure"/>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Heure Fermeture</label>
-                                    <input type="time" class="form-control" id="Heure" placeholder="Heure"> 
+                                    <input type="time" class="form-control" id="Heure" placeholder="Heure"/> 
                                 </div>
                                 
                                 <div class="form-group">
                                     <label>Jour d'ouverture</label>
-                                    <br>
+                                    <br/>
                                     <div class="btn-group" data-toggle="buttons">
                                         <label class="btn theme-btn active">
-                                            <input type="checkbox" checked>Lun </label>
+                                            <input type="checkbox" checked="true"/>Lun </label>
                                         <label class="btn theme-btn active">
-                                            <input type="checkbox"> Mar </label>
+                                            <input type="checkbox" checked="true"/> Mar </label>
                                         <label class="btn theme-btn active">
-                                            <input type="checkbox"> Mer </label>
+                                            <input type="checkbox"/> Mer </label>
                                         <label class="btn theme-btn active">
-                                            <input type="checkbox"> Jeu </label>
+                                            <input type="checkbox"/> Jeu </label>
                                         <label class="btn btn-secondary">
-                                            <input type="checkbox"> Ven </label>
+                                            <input type="checkbox"/> Ven </label>
                                         <label class="btn btn-secondary">
-                                            <input type="checkbox"> Sam </label>
+                                            <input type="checkbox"/> Sam </label>
                                         <label class="btn btn-secondary">
-                                            <input type="checkbox"> Dim </label>
+                                            <input type="checkbox"/> Dim </label>
                                     </div>
                                 </div>
                                 
@@ -94,7 +100,7 @@
                                 
                                 <div class="form-group">
                                     <label for="exampleInputFile">Image restaurant</label>
-                                    <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">  
+                                    <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp"/>  
                                 </div>
                                 <p>
                                     <button type="submit" class="btn theme-btn">Confirmer</button>
@@ -109,6 +115,10 @@
             </div>
         </div>
     </section>
-
-    <!-- Include du footer -->        
-    <ui:include src="footer.xhtml" />
+</div>
+    <ui:include src="footer.xhtml"/>
+</div>
+    
+    
+</h:body>
+</html>
