@@ -26,6 +26,7 @@ public class UserDao {
     private DataSource dataSource;
     
     private final String SELECT_ALL_USER="SELECT * FROM T_USER";
+    private final String SELECT_USER_BY_EMAIL="SELECT * FROM T_USER WHERE MAIL=?";
     private final String INSERT_USER="INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES(?,?,?,?,?,?,?)";
     
     public void setDataSource(DataSource dataSource){
@@ -88,6 +89,7 @@ public class UserDao {
             ps.setInt(i, user.getBonus());
             System.out.println("USER : "+user.toString());
             rs = ps.executeUpdate();
+            System.out.println("Resultat insertion : "+rs);
             
             
             
@@ -103,4 +105,33 @@ public class UserDao {
         }
         return rs;
         }
+
+    public boolean existsUser(String email) {
+        Connection con = null;
+        boolean result=false;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(SELECT_USER_BY_EMAIL);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            
+            result=rs.next();
+            System.out.println("USER EXISTS : "+result);
+			
+            rs.close();
+            ps.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return result;
+    }
 }

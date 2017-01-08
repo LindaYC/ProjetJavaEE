@@ -5,8 +5,13 @@
  */
 package managedBean;
 
+import Manager.ReadManager;
 import Manager.WriteManager;
-import javax.faces.bean.ViewScoped;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.bean.SessionScoped;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author YC-Linda
  */
 @javax.faces.bean.ManagedBean(name="userManagedBean")
-@ViewScoped
-public class ClientManagedBean extends ParentManagedBean{
+@SessionScoped
+public class ClientManagedBean extends ParentManagedBean implements Serializable{
     
     private User user;
-
+    
     
     public ClientManagedBean(){
         user=new User();
@@ -27,6 +32,9 @@ public class ClientManagedBean extends ParentManagedBean{
     
     @Autowired
     private WriteManager writeManager;
+    
+    @Autowired
+    private ReadManager readManager;
     
     public User getUser() {
         return user;
@@ -36,8 +44,38 @@ public class ClientManagedBean extends ParentManagedBean{
         this.user = user;
     }
     
+    
+    public boolean validateEmail(){
+        // on verifie que l'adresse mail n'est pas utilise
+        return !readManager.existsUser(user.getEmail());
+    }
+    
+    
     public void addClient(){
-        
-        writeManager.addUser(user);
+        // validation
+        boolean validation=true;
+        if(!validateEmail()) {
+            validation=false;
+            addError("L'adresse mail que vous avez saisie est liée à un autre profil");
+        }
+        if(!user.getPassword().equals(user.getPasswordConfirm())){
+            validation=false;
+            addError("Les deux mots de passe saisis ne sont pas identiques");
+        }
+        int res=-1;
+        if(validation)
+        res=writeManager.addUser(user);
+   
+        try {
+        if(res==1){
+           
+                redirect("espaceClient.xhtml");
+            
+        }else
+            addError("erreur d'insertion");
+         
+        } catch (IOException ex) {
+                Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
 }

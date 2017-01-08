@@ -14,6 +14,7 @@ public class User {
     private String prenom;
     private String email;
     private String password;
+    private String passwordConfirm;
     private int profil;
     private int bonus;
     private String telephone;
@@ -95,6 +96,20 @@ public class User {
     @Override
     public String toString() {
         return "User{" + "nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", password=" + password + ", profil=" + profil + ", bonus=" + bonus + ", telephone=" + telephone + '}';
+    }
+
+    /**
+     * @return the passwordConfirm
+     */
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    /**
+     * @param passwordConfirm the passwordConfirm to set
+     */
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
     
 }

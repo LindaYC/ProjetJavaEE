@@ -28,5 +28,9 @@ public class ReadManager {
         return userDao.loadAll();
     }
 
+    public boolean existsUser(String email) {
+        return userDao.existsUser(email);
+    }
+
     
 }

@@ -28,7 +28,8 @@
                      <div class="col-md-8">
                         <div class="widget">
                            <div class="widget-body">
-                               <h:form>
+                               <h:form id="form">
+                                   <p:messages id="message" closable="true"/>
                                  <div class="row">
                                     <div class="form-group col-sm-6">
                                        <label for="exampleInputEmail1">Prenom</label>
@@ -52,12 +53,12 @@
                                     </div>
                                     <div class="form-group col-sm-6">
                                        <label for="exampleInputPassword1">Repeter le mot de passe</label>
-                                       <p:inputText styleClass="form-control" type="password" id="exampleInputPassword2" placeholder="Mot de passe" /> 
+                                       <p:inputText styleClass="form-control" type="password" value="#{userManagedBean.user.passwordConfirm}" id="exampleInputPassword2" placeholder="Mot de passe" /> 
                                     </div>
                                  </div>
                                  <div class="row">
                                     <div class="col-sm-4">
-                                        <p><p:commandButton value="S'inscrire" class="btn theme-btn"  actionListener="#{userManagedBean.addClient()}"/></p>
+                                        <p><p:commandButton value="S'inscrire" class="btn theme-btn"  update="form:message" actionListener="#{userManagedBean.addClient()}"/></p>
                                          
                                     </div>
                                  </div>
