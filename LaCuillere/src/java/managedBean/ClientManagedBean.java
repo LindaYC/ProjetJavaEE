@@ -3,21 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managerBean;
+package managedBean;
 
+import Manager.WriteManager;
 import javax.faces.bean.ViewScoped;
 import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author YC-Linda
  */
-@javax.faces.bean.ManagedBean(name="client")
+@javax.faces.bean.ManagedBean(name="userManagedBean")
 @ViewScoped
-public class ClientManagedBean extends ManagedBean{
+public class ClientManagedBean extends ParentManagedBean{
     
     private User user;
 
+    
+    public ClientManagedBean(){
+        user=new User();
+    }
+    
+    @Autowired
+    private WriteManager writeManager;
+    
     public User getUser() {
         return user;
     }
@@ -26,5 +36,8 @@ public class ClientManagedBean extends ManagedBean{
         this.user = user;
     }
     
-    
+    public void addClient(){
+        
+        writeManager.addUser(user);
+    }
 }

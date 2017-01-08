@@ -5,10 +5,35 @@
  */
 package Manager;
 
+import Dao.UserDao;
+import model.User;
+
 /**
  *
  * @author MLBaiche
  */
 public class WriteManager {
+
+    private UserDao userDao;
+    
+    public int addUser(User user) {
+        
+       return userDao.addUser(user);
+        
+    }
+
+    /**
+     * @return the userDao
+     */
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    /**
+     * @param userDao the userDao to set
+     */
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
     
 }

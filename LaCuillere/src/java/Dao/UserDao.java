@@ -26,6 +26,7 @@ public class UserDao {
     private DataSource dataSource;
     
     private final String SELECT_ALL_USER="SELECT * FROM T_USER";
+    private final String INSERT_USER="INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES(?,?,?,?,?,?,?)";
     
     public void setDataSource(DataSource dataSource){
         this.dataSource=dataSource;
@@ -45,6 +46,10 @@ public class UserDao {
                 user.setNom(rs.getString("NOM"));
                 user.setPrenom(rs.getString("PRENOM"));
                 user.setEmail(rs.getString("MAIL"));
+                user.setPassword(rs.getString("PASSWORD"));
+                user.setTelephone(rs.getString("TELEPHONE"));
+                user.setProfil(rs.getInt("PROFIL"));
+                user.setBonus(rs.getInt("BONUS"));
                 //  rajouter les autres....
                 System.out.println("nom : "+user.getNom());
                 liste.add(user);
@@ -65,4 +70,37 @@ public class UserDao {
         }
         return liste;
     }
+    
+        public int addUser(User user){
+            Connection con = null;
+            int rs=0;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(INSERT_USER);
+            int i=1;
+            ps.setString(i++, user.getNom());
+            ps.setString(i++, user.getPrenom());
+            ps.setString(i++, user.getEmail());
+            ps.setString(i++, user.getPassword());
+            ps.setString(i++, user.getTelephone());
+            ps.setInt(i++,user.getProfil());
+            ps.setInt(i, user.getBonus());
+            System.out.println("USER : "+user.toString());
+            rs = ps.executeUpdate();
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return rs;
+        }
 }

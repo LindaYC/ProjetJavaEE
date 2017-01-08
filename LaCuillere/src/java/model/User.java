@@ -13,6 +13,9 @@ public class User {
     private String nom;
     private String prenom;
     private String email;
+    private String password;
+    private int profil;
+    private int bonus;
     private String telephone;
 
     public String getNom() {
@@ -45,6 +48,53 @@ public class User {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the profil
+     */
+    public int getProfil() {
+        return profil;
+    }
+
+    /**
+     * @param profil the profil to set
+     */
+    public void setProfil(int profil) {
+        this.profil = profil;
+    }
+
+    /**
+     * @return the bonus
+     */
+    public int getBonus() {
+        return bonus;
+    }
+
+    /**
+     * @param bonus the bonus to set
+     */
+    public void setBonus(int bonus) {
+        this.bonus = bonus;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", password=" + password + ", profil=" + profil + ", bonus=" + bonus + ", telephone=" + telephone + '}';
     }
     
 }
