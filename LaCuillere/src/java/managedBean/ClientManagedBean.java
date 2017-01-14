@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -74,6 +76,24 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         }else
             addError("erreur d'insertion");
          
+        } catch (IOException ex) {
+                Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    
+    public void connexion(){
+        boolean isConnected=readManager.isConnected(user);
+        try { 
+        if(isConnected){
+            
+                redirect("espaceClient.xhtml");
+            
+        }else
+        {
+           // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR", "Veuillez verifier vos identifiants"));
+                 addError("Veuillez verifier vos identifiants");
+               //  redirect("connectClient.xhtml");   
+        }
         } catch (IOException ex) {
                 Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             }

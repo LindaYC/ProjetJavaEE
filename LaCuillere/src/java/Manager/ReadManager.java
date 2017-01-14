@@ -31,6 +31,11 @@ public class ReadManager {
     public boolean existsUser(String email) {
         return userDao.existsUser(email);
     }
+    
+    public boolean isConnected(User u){
+        
+        return userDao.isConnected(u);
+    }
 
     
 }

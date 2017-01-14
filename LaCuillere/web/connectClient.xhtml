@@ -24,17 +24,20 @@
         <div class="card card-container">
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
             <p id="profile-name" class="profile-name-card"></p>
-            <form class="form-signin">
+            <h:form id="form" class="form-signin">
+                <p:messages id="message" showDetail="true" autoUpdate="true" closable="true" />
                 <span id="reauth-email" class="reauth-email"></span>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Addresse email" required="true"  />
-                <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="true" />
+                
+                <p:inputText  type="email" value="#{userManagedBean.user.email}" id="inputEmail" class="form-control" placeholder="Addresse email" required="true"  />
+                <p:inputText type="password" value="#{userManagedBean.user.password}" id="inputPassword" class="form-control" placeholder="Mot de passe" required="true" />
                 <div id="remember" class="checkbox">
                     <label>
-                        <input type="checkbox" value="remember-me"/> Se souvenir de moi
+                        <p:inputText  type="checkbox" value="remember-me"/> Se souvenir de moi
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Connexion</button>
-            </form>
+                
+                <p:commandButton class="btn btn-lg btn-primary btn-block btn-signin" update="form:message" actionListener="#{userManagedBean.connexion()}" value="Connexion"/>
+            </h:form>
             <a href="#" class="forgot-password">
                 Mot de passe oublie?
             </a>

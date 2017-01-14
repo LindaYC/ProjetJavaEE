@@ -26,8 +26,9 @@ public class UserDao {
     private DataSource dataSource;
     
     private final String SELECT_ALL_USER="SELECT * FROM T_USER";
-    private final String SELECT_USER_BY_EMAIL="SELECT * FROM T_USER WHERE MAIL=?";
     private final String INSERT_USER="INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES(?,?,?,?,?,?,?)";
+    private final String SELECT_USER_BY_EMAIL="SELECT * FROM T_USER WHERE MAIL=?";
+    private final String SELECT_CONNECTED_USER="SELECT * FROM T_USER WHERE MAIL=? AND PASSWORD=?";
     
     public void setDataSource(DataSource dataSource){
         this.dataSource=dataSource;
@@ -111,11 +112,16 @@ public class UserDao {
         boolean result=false;
         
         try {
+            // ouvrir la connexion
             con = dataSource.getConnection();
+            // preparer la requete
             PreparedStatement ps = con.prepareStatement(SELECT_USER_BY_EMAIL);
+            // remplacer les parametres de la requete
             ps.setString(1, email);
+            // executer la requete
             ResultSet rs = ps.executeQuery();
             
+            // recuperer le resultat
             result=rs.next();
             System.out.println("USER EXISTS : "+result);
 			
@@ -133,5 +139,40 @@ public class UserDao {
 			
         }
         return result;
+    }
+    
+    public boolean isConnected(User u){
+     Connection con = null;
+        boolean result=false;
+        
+        try {
+            // ouvrir la connexion
+            con = dataSource.getConnection();
+            // preparer la requete
+            PreparedStatement ps = con.prepareStatement(SELECT_CONNECTED_USER);
+            // remplacer les parametres de la requete
+            ps.setString(1, u.getEmail());
+            ps.setString(2, u.getPassword());
+            // executer la requete
+            ResultSet rs = ps.executeQuery();
+            
+            // recuperer le resultat
+            result=rs.next();
+            System.out.println("USER EXISTS : "+result);
+			
+            rs.close();
+            ps.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return result;   
     }
 }

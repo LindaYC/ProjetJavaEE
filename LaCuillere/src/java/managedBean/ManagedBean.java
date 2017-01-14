@@ -170,7 +170,8 @@ public class ManagedBean {
      * @param key
      */
     protected final void addError(String key) {
-        addMessage(null, FacesMessage.SEVERITY_ERROR, key, null);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erreur : ", key));
+        //addMessage(null, FacesMessage.SEVERITY_ERROR, key, key);
     }
 
     /**
