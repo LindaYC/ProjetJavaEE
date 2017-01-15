@@ -5,19 +5,42 @@
  */
 package Manager;
 
+import Dao.CategorieDao;
+import Dao.RestaurantDao;
 import Dao.UserDao;
+import java.io.Serializable;
 import java.util.List;
+import model.Categorie;
 import model.User;
 
 /**
  *
  * @author MLBaiche
  */
-public class ReadManager {
+public class ReadManager implements Serializable{
     
     private UserDao userDao;
     
-  
+    private CategorieDao categorieDao;
+    
+    private RestaurantDao restaurantDao;
+
+    public CategorieDao getCategorieDao() {
+        return categorieDao;
+    }
+
+    public void setCategorieDao(CategorieDao categorieDao) {
+        this.categorieDao = categorieDao;
+    }
+
+    public RestaurantDao getRestaurantDao() {
+        return restaurantDao;
+    }
+
+    public void setRestaurantDao(RestaurantDao restaurantDao) {
+        this.restaurantDao = restaurantDao;
+    }
+    
     
     public void setUserDao(UserDao userDao){
         this.userDao=userDao;
@@ -35,6 +58,11 @@ public class ReadManager {
     public boolean isConnected(User u){
         
         return userDao.isConnected(u);
+    }
+
+    public List<Categorie> loadAllCategorie() {
+       
+        return categorieDao.loadAll();
     }
 
     

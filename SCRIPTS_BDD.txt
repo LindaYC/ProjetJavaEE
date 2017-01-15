@@ -1,4 +1,4 @@
-CREATE TABLE T_CATEGORIE(
+﻿CREATE TABLE T_CATEGORIE(
 CATEGORIE VARCHAR(50) NOT NULL,
 LIBELLE VARCHAR(50),
 PRIMARY KEY (CATEGORIE)
@@ -37,16 +37,14 @@ VILLE VARCHAR(50) ,
 NUM_PHONE VARCHAR(50),
 EMAIL VARCHAR(50),
 NB_PLACE_MAX INT ,
-PRIMARY KEY(ID_RESTAURANT)
-);
-
-
-CREATE TABLE T_RESTAURANT_CATEGORIE(
-ID_RESTAURANT INTEGER NOT NULL,
-CATEGORIE VARCHAR(50) NOT NULL,
-FOREIGN KEY (ID_RESTAURANT) REFERENCES T_RESTAURANT(ID_RESTAURANT),
+TIME_OUVERTURE TIME,
+TIME_FERMETURE TIME,
+CATEGORIE VARCHAR(50),
+PHOTO BYTEA,
+PRIMARY KEY(ID_RESTAURANT),
 FOREIGN KEY (CATEGORIE) REFERENCES T_CATEGORIE(CATEGORIE)
 );
+
 
 CREATE TABLE T_RESTAURANT_MENU(
 ID_RESTAURANT INTEGER NOT NULL,
@@ -144,15 +142,23 @@ INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES('AHAM
 INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES('BAQA','Bahaa','bahaa.baqa@gmail.com','password','0102',1,100);
 INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES('CRISTIANO','Ronaldo','ronaldo.cr7@gmail.com','password','07',1,100);
 INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES('JEAN','Mouloud','jean.mouloud@gmail.com','password','0105',0,0);
--- Restaurant le Tipaza
+
+
+-- Restaurant le Tipaza 155, rue Saint Charles 75015 Paris France
 INSERT INTO T_MENU(ID_MENU,NOM,PRIX,REDUCTION,ENTREE,PLAT,DESSERT) VALUES (NEXTVAL('SQ_ID_MENU'),'Menu Délice Oriental','22','20','Salade Berbère à l œuf et merguez ou Chakcouka à l œuf et merguez  ou Brick à l oeuf et viande hachée ',
 'Tajine Dolma aux fruits secs flambés à l alcool de figues (boulette d agneau et bœuf maison, figues, dattes et oignons confits) ou Couscous Royal (méchoui, brochette de gigot d agneau, merguez maison, boulette) ou Alouch Moslih',
 'Tarte Berbère (croustillant de pâte feuilletée, pommes, raisins secs, cannelle) ou Coupe Tipaza (glace vanille, noisette, chantilly, sauce noisette) ou Coupe Berbère (glace noisette, dattes, figues, sauce caramel)');
 
--- Restaurant Molto Gusto
+-- Restaurant Molto Gusto 
 INSERT INTO T_MENU(ID_MENU,NOM,PRIX,REDUCTION,ENTREE,PLAT,DESSERT) VALUES (NEXTVAL('SQ_ID_MENU'),'Bombino','8.5','0','','Nugget Frittes ou Spaghetti bolognaise','2 boules de glaces et un jus de fruits');
 INSERT INTO T_MENU(ID_MENU,NOM,PRIX,REDUCTION,ENTREE,PLAT,DESSERT) VALUES (NEXTVAL('SQ_ID_MENU'),'Menu Gourmand','25','0','Salade niçoise ou  Escargots ou Tartate avocat crevette','Pizza a base de crème fraiche ou à base de tomates au choix','Fondue au Chocolat ou Tarte au citron');
 
-COMMIT;
+--Sushirama
+INSERT INTO T_MENU(ID_MENU,NOM,PRIX,REDUCTION,ENTREE,PLAT,DESSERT) VALUES (NEXTVAL('SQ_ID_MENU'),'Le Yoshida gourmand','16','10','Mango yuzu : saumon mariné à la mangue, avocat, sauce yuzu',
+'Roll rama (10P) tempura crevette, avocat, concombre, sauce mayo, épicé',
+'Demi mangue fraîche ou Glace au thé vert ou Gâteau dorayaki haricot rouge, thé vert');
 
+-- Les enfants teribles
+INSERT INTO T_MENU(ID_MENU,NOM,PRIX,REDUCTION,ENTREE,PLAT,DESSERT) VALUES (NEXTVAL('SQ_ID_MENU'),'Le Grand Gourmand','32','0','Foie gras de canard maison: cuit en terrine, chutney d oignons aux fruits rouges (Petite ou Grande )',
+'Filet de boeuf, beurre maître d hôtel au noix','Le macaron framboise et sa mousseline de litchi ou Terrible : glace vanille, cookies, chantilly ou Le mi-cuit au chocolat noir, boule vanille');
 

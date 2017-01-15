@@ -30,82 +30,66 @@
                 <div class="col-md-8">
                     <div class="widget">
                         <div class="widget-body">
-                            <form>
-                                <div class="form-group">
+                           <h:form id="form" enctype="multipart/form-data">
+                               <p:messages id="message" showDetail="true" autoUpdate="true" closable="true" />
+                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nom *</label>
-                                    <input class="form-control" type="text" value="Nom du restaurant" id="example-text-input"/> 
+                                    <p:inputText  class="form-control" type="text" value="#{restaurantManagedBean.restaurant.nom}" id="nom"/> 
                                 </div>
                                 
-                                <div class="form-group">
+                                  <div class="form-group">
                                     <label for="exampleInputEmail1">Adresse *</label>
-                                    <input class="form-control" type="text" value="Adresse du restaurant" id="example-text-input"/> 
+                                     <p:inputText class="form-control" type="text" value="#{restaurantManagedBean.restaurant.adresse}" id="adresse"/> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Ville *</label>
+                                     <p:inputText class="form-control" type="text" value="#{restaurantManagedBean.restaurant.ville}" id="ville"/> 
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Telephone</label>
-                                    <input class="form-control" type="tel" value="01 02 03 04 05" id="example-tel-input"/> 
+                                     <p:inputText class="form-control" type="tel" value="#{restaurantManagedBean.restaurant.numPhone}" id="tel"/> 
                                 </div>
                                 
-                                <div class="form-group">
+                               <div class="form-group">
                                     <label for="exampleInputEmail1">Email *</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Saisir email"/> 
+                                     <p:inputText type="email" class="form-control" id="exampleInputEmail1"  placeholder="Saisir email"/> 
                                 </div>
-
+                                 <div class="form-group">
+                                    <label for="exampleInputEmail1">Capacité *</label>
+                                    <p:inputText class="form-control" type="text" value="#{restaurantManagedBean.restaurant.capacite}" id="capacite"/> 
+                                </div>
+                               
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Heure Ouverture</label>
-                                     <input type="time" class="form-control" id="Heure" placeholder="Heure"/>
-                                </div>
+                                    <label for="categorie">Catégorie</label>
+                                   
+                                    <p:inputText class="form-control" type="text" value="#{restaurantManagedBean.restaurant.categorie.nom}" id="categorie"/> 
+                               
+                                  
+                                  </div>
+                               
                                 
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Heure Fermeture</label>
-                                    <input type="time" class="form-control" id="Heure" placeholder="Heure"/> 
-                                </div>
                                 
-                                <div class="form-group">
-                                    <label>Jour d'ouverture</label>
-                                    <br/>
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn theme-btn active">
-                                            <input type="checkbox" checked="true"/>Lun </label>
-                                        <label class="btn theme-btn active">
-                                            <input type="checkbox" checked="true"/> Mar </label>
-                                        <label class="btn theme-btn active">
-                                            <input type="checkbox"/> Mer </label>
-                                        <label class="btn theme-btn active">
-                                            <input type="checkbox"/> Jeu </label>
-                                        <label class="btn btn-secondary">
-                                            <input type="checkbox"/> Ven </label>
-                                        <label class="btn btn-secondary">
-                                            <input type="checkbox"/> Sam </label>
-                                        <label class="btn btn-secondary">
-                                            <input type="checkbox"/> Dim </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="exampleSelect1">Cat�gorie</label>
-                                    <select class="form-control" id="exampleSelect1">
-                                        <option>Gastronomie</option>
-                                        <option>Orientale</option>
-                                        <option>Thailande</option>
-                                        <option>Mexicain</option>
-                                        <option>Italien</option>
-                                    </select>
-                                </div>
+                             
                                 
                                 <div class="form-group">
                                     <label for="exampleTextarea">Description Menu</label>
-                                    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                                    <p:inputTextarea class="form-control" id="exampleTextarea" rows="3"/>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="exampleInputFile">Image restaurant</label>
-                                    <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp"/>  
+                                    <p:fileUpload value="#{restaurantManagedBean.packageFile}" mode="simple"/>
+                                   
+                                    
                                 </div>
                                 <p>
-                                    <button type="submit" class="btn theme-btn">Confirmer</button>
+                                    <p:commandButton value="Confirmer" actionListener="#{restaurantManagedBean.addRestaurant()}" ajax="false" update="form:message" class="btn theme-btn"/>
                                 </p>
-                            </form>
+                                
+                                 
+                                
+                            </h:form>
                         </div>
                     </div>
                     <!-- end: Widget -->
