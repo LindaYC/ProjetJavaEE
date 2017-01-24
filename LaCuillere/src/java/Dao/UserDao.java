@@ -27,8 +27,10 @@ public class UserDao {
     
     private final String SELECT_ALL_USER="SELECT * FROM T_USER";
     private final String INSERT_USER="INSERT INTO T_USER(NOM,PRENOM,MAIL,PASSWORD,TELEPHONE,PROFIL,BONUS) VALUES(?,?,?,?,?,?,?)";
+    private final String ADD_RESTAURANT_TO_USER="INSERT INTO T_USER_RESTAURANT(MAIL,ID_RESTAURANT) VALUES(?,?)";
     private final String SELECT_USER_BY_EMAIL="SELECT * FROM T_USER WHERE MAIL=?";
     private final String SELECT_CONNECTED_USER="SELECT * FROM T_USER WHERE MAIL=? AND PASSWORD=?";
+
     
     public void setDataSource(DataSource dataSource){
         this.dataSource=dataSource;
@@ -50,7 +52,11 @@ public class UserDao {
                 user.setEmail(rs.getString("MAIL"));
                 user.setPassword(rs.getString("PASSWORD"));
                 user.setTelephone(rs.getString("TELEPHONE"));
-                user.setProfil(rs.getInt("PROFIL"));
+                if(rs.getInt("PROFIL")==1){
+                    user.setProfil(true);
+                }else
+                    user.setProfil(false);
+                
                 user.setBonus(rs.getInt("BONUS"));
                 //  rajouter les autres....
                 System.out.println("nom : "+user.getNom());
@@ -86,7 +92,11 @@ public class UserDao {
             ps.setString(i++, user.getEmail());
             ps.setString(i++, user.getPassword());
             ps.setString(i++, user.getTelephone());
-            ps.setInt(i++,user.getProfil());
+            if(user.getProfil()){
+                ps.setInt(i++,1);
+            }else
+                ps.setInt(i++,0);
+            
             ps.setInt(i, user.getBonus());
             System.out.println("USER : "+user.toString());
             rs = ps.executeUpdate();
@@ -174,5 +184,86 @@ public class UserDao {
 			
         }
         return result;   
+    }
+
+    public void addRestaurant(String user, int id_rest) {
+        Connection con = null;
+        int rs=0;
+        
+        try {
+            // ouvrir la connexion
+            con = dataSource.getConnection();
+            // preparer la requete
+            PreparedStatement ps = con.prepareStatement(ADD_RESTAURANT_TO_USER);
+            // remplacer les parametres de la requete
+            ps.setString(1, user);
+            ps.setInt(2, id_rest);
+            // executer la requete
+             rs = ps.executeUpdate();
+            
+            ps.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+         
+    }
+
+    public User getByMail(String email) {
+        Connection con = null;
+        User user=null;
+        try {
+            // ouvrir la connexion
+            con = dataSource.getConnection();
+            // preparer la requete
+            PreparedStatement ps = con.prepareStatement(SELECT_USER_BY_EMAIL);
+            // remplacer les parametres de la requete
+            ps.setString(1, email);
+            // executer la requete
+            ResultSet rs = ps.executeQuery();
+            
+            // recuperer le resultat
+           
+             if(rs.next()){
+                 user = new User();
+                user.setNom(rs.getString("NOM"));
+                user.setPrenom(rs.getString("PRENOM"));
+                user.setEmail(rs.getString("MAIL"));
+                user.setPassword(rs.getString("PASSWORD"));
+                user.setTelephone(rs.getString("TELEPHONE"));
+                if(rs.getInt("PROFIL")==1){
+                    user.setProfil(true);
+                }else
+                    user.setProfil(false);
+                
+                user.setBonus(rs.getInt("BONUS"));
+                //  rajouter les autres....
+                System.out.println("nom : "+user.getNom());
+                
+            }
+             
+            
+			
+            rs.close();
+            ps.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return user;
     }
 }

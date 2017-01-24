@@ -5,7 +5,9 @@
  */
 package model;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.sql.Time;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -14,7 +16,7 @@ import javax.sql.rowset.serial.SerialBlob;
  * @author YC-Linda
  */
 public class Restaurant {
-    private String idRestaurant;
+    private int idRestaurant;
     private String nom;
     private Categorie categorie;
     private String adresse;
@@ -25,7 +27,26 @@ public class Restaurant {
     private Time heureOuverture;
     private Time heureFermeture;
     private long taillePhoto;
+    private int prixMoyen;
     private FileInputStream  packageBlob;
+    private ByteArrayOutputStream packageBlobRead;
+
+    public ByteArrayOutputStream getPackageBlobRead() {
+        return packageBlobRead;
+    }
+
+    public int getPrixMoyen() {
+        return prixMoyen;
+    }
+
+    public void setPrixMoyen(int prixMoyen) {
+        this.prixMoyen = prixMoyen;
+    }
+    
+
+    public void setPackageBlobRead(ByteArrayOutputStream packageBlobRead) {
+        this.packageBlobRead = packageBlobRead;
+    }
 
     public long getTaillePhoto() {
         return taillePhoto;
@@ -54,11 +75,11 @@ public class Restaurant {
         this.categorie = categorie;
     }
     
-    public String getIdRestaurant() {
+    public int getIdRestaurant() {
         return idRestaurant;
     }
 
-    public void setIdRestaurant(String idRestaurant) {
+    public void setIdRestaurant(int idRestaurant) {
         this.idRestaurant = idRestaurant;
     }
 

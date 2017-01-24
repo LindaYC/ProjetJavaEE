@@ -5,10 +5,12 @@
  */
 package Manager;
 
+import Dao.AnnonceDao;
 import Dao.CategorieDao;
 import Dao.RestaurantDao;
 import Dao.UserDao;
 import java.util.List;
+import model.Annonce;
 import model.Categorie;
 import model.Restaurant;
 import model.User;
@@ -22,6 +24,16 @@ public class WriteManager {
     private UserDao userDao;
     private CategorieDao categorieDao;
     private RestaurantDao restaurantDao;
+    private AnnonceDao annonceDao;
+
+    public AnnonceDao getAnnonceDao() {
+        return annonceDao;
+    }
+
+    public void setAnnonceDao(AnnonceDao annonceDao) {
+        this.annonceDao = annonceDao;
+    }
+    
 
     public CategorieDao getCategorieDao() {
         return categorieDao;
@@ -62,7 +74,7 @@ public class WriteManager {
         this.userDao = userDao;
     }
 
-    public int addRestaurant(Restaurant restaurant) {
+    public int addRestaurant(Restaurant restaurant,String user) {
         List<Categorie> categories = categorieDao.loadAll();
         boolean findCategorie=false;
         for(Categorie cat : categories){
@@ -78,8 +90,21 @@ public class WriteManager {
         if(!findCategorie){
                 categorieDao.insertCategorie(restaurant.getCategorie().getNom().toUpperCase());
             }
-        
-            return restaurantDao.createRestaurant(restaurant);
+            
+            // generation de l'id restaurant
+            int id_rest=restaurantDao.nextVal();
+            restaurant.setIdRestaurant(id_rest);
+            int res= restaurantDao.createRestaurant(restaurant);
+            userDao.addRestaurant(user,id_rest);
+            Annonce annonce = new Annonce();
+            annonce.setEmail(restaurant.getEmail());
+            annonce.setIdRestaurant(id_rest);
+            annonce.setNumPhone(restaurant.getNumPhone());
+            int id_annonce=annonceDao.nextVal();
+            annonce.setIdAnnonce(id_annonce);
+            annonceDao.createAnnonce(annonce);
+            
+            return res;
     }
     
 }

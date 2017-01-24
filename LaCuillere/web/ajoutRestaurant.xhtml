@@ -53,10 +53,10 @@
                                 
                                <div class="form-group">
                                     <label for="exampleInputEmail1">Email *</label>
-                                     <p:inputText type="email" class="form-control" id="exampleInputEmail1"  placeholder="Saisir email"/> 
+                                    <p:inputText type="email" class="form-control" value="#{restaurantManagedBean.restaurant.email}" id="exampleInputEmail1"  placeholder="Saisir email"/> 
                                 </div>
                                  <div class="form-group">
-                                    <label for="exampleInputEmail1">Capacité *</label>
+                                    <label for="capacite">Capacité *</label>
                                     <p:inputText class="form-control" type="text" value="#{restaurantManagedBean.restaurant.capacite}" id="capacite"/> 
                                 </div>
                                
@@ -67,7 +67,13 @@
                                
                                   
                                   </div>
+                                <div class="form-group">
+                                    <label for="prix">Prix Moyen</label>
+                                   
+                                    <p:inputText class="form-control" type="text" value="#{restaurantManagedBean.restaurant.prixMoyen}" id="prix"/> 
                                
+                                  
+                                  </div>
                                 
                                 
                              

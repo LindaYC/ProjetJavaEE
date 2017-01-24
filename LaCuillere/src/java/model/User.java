@@ -15,7 +15,7 @@ public class User {
     private String email;
     private String password;
     private String passwordConfirm;
-    private int profil;
+    private boolean profil;
     private int bonus;
     private String telephone;
 
@@ -68,14 +68,14 @@ public class User {
     /**
      * @return the profil
      */
-    public int getProfil() {
+    public boolean getProfil() {
         return profil;
     }
 
     /**
      * @param profil the profil to set
      */
-    public void setProfil(int profil) {
+    public void setProfil(boolean profil) {
         this.profil = profil;
     }
 

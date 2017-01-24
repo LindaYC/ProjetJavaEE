@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
+import javax.servlet.http.HttpSession;
 import model.Categorie;
 import model.Restaurant;
 import org.primefaces.model.UploadedFile;
@@ -27,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @javax.faces.bean.ManagedBean(name="restaurantManagedBean")
 @SessionScoped
 public class RestaurantManagedBean extends ParentManagedBean implements Serializable{
-   
+    private String user;
     private Restaurant restaurant;
     private List<String> allCategorie;
     private UploadedFile packageFile;
@@ -44,6 +45,9 @@ public class RestaurantManagedBean extends ParentManagedBean implements Serializ
         Categorie cat=new Categorie();
         restaurant.setCategorie(cat);
         restaurant.setCapacite(50);
+        HttpSession session = getHttpSession();
+        user=(String)session.getAttribute("USER");
+        
     }
 
     public UploadedFile getPackageFile() {
@@ -58,26 +62,31 @@ public class RestaurantManagedBean extends ParentManagedBean implements Serializ
    
     public void addRestaurant(){
         
-        if(packageFile!=null){
-                //ByteArrayOutputStream output=new ByteArrayOutputStream(); 
-            try {
-                byte[] bytes= new byte[4096];
-                packageFile.getInputstream().read(bytes);
-               // System.out.println("Taille photo : "+bytes.length);
-                System.out.println("Taille photo 2 : "+packageFile.getSize());
-                //FileInputStream fis = new FileInputStream(new FileInputStream)
+        try {
+            if(packageFile!=null){
+                //ByteArrayOutputStream output=new ByteArrayOutputStream();
+                try {
+                    byte[] bytes= new byte[4096];
+                    packageFile.getInputstream().read(bytes);
+                    // System.out.println("Taille photo : "+bytes.length);
+                    System.out.println("Taille photo 2 : "+packageFile.getSize());
+                    //FileInputStream fis = new FileInputStream(new FileInputStream)
+                    
+                    //output.write(bytes);
+                    restaurant.setTaillePhoto(packageFile.getSize());
+                    restaurant.setPackageBlob((FileInputStream)packageFile.getInputstream());
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(RestaurantManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
-                //output.write(bytes);
-                restaurant.setTaillePhoto(packageFile.getSize());
-                restaurant.setPackageBlob((FileInputStream)packageFile.getInputstream());
-                
-            } catch (IOException ex) {
-                Logger.getLogger(RestaurantManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-          
-            }
-        
-        int res=writeManager.addRestaurant(restaurant);
+            
+            int res=writeManager.addRestaurant(restaurant,user);
+            redirect("espaceClient.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(RestaurantManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

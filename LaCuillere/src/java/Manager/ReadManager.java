@@ -11,6 +11,7 @@ import Dao.UserDao;
 import java.io.Serializable;
 import java.util.List;
 import model.Categorie;
+import model.Restaurant;
 import model.User;
 
 /**
@@ -65,5 +66,24 @@ public class ReadManager implements Serializable{
         return categorieDao.loadAll();
     }
 
+    public List<Restaurant> search(String nom, String ville, String categorieSelected) {
+       
+        String categorie="";
+        List<Categorie> categories = categorieDao.loadAll();
+        
+        for(Categorie cat : categories){
+            
+            
+            if(cat.getNom().toUpperCase().equals(categorieSelected.toUpperCase())){
+                categorie=cat.getNom().toUpperCase();
+            }
+    }
+
+        return restaurantDao.search(nom,ville,categorie);
+    }
+
+    public User getUserByMail(String email) {
+        return userDao.getByMail(email);
+    }
     
 }

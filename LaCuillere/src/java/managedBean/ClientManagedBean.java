@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -67,7 +68,11 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         int res=-1;
         if(validation)
         res=writeManager.addUser(user);
-   
+        
+        
+        HttpSession session = getHttpSession();
+        session.setAttribute("USER", user.getEmail());
+        session.setAttribute("PROFIL", user.getProfil());
         try {
         if(res==1){
            
@@ -85,7 +90,11 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         boolean isConnected=readManager.isConnected(user);
         try { 
         if(isConnected){
-            
+                HttpSession session = getHttpSession();
+                session.setAttribute("USER", user.getEmail());
+                user=readManager.getUserByMail(user.getEmail());
+                session.setAttribute("USER", user.getEmail());
+                session.setAttribute("PROFIL", user.getProfil());
                 redirect("espaceClient.xhtml");
             
         }else
