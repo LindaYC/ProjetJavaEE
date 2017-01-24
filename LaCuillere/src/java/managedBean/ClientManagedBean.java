@@ -27,17 +27,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ClientManagedBean extends ParentManagedBean implements Serializable{
     
     private User user;
+    private String ancien_mail;
+    private boolean connected=false;
     
     
-    public ClientManagedBean(){
-        user=new User();
-    }
+    
     
     @Autowired
     private WriteManager writeManager;
     
     @Autowired
     private ReadManager readManager;
+    
+    public ClientManagedBean(){
+        user=new User();
+        HttpSession session = getHttpSession();
+        ancien_mail=(String)session.getAttribute("USER");
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
     
     public User getUser() {
         return user;
@@ -53,7 +67,37 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         return !readManager.existsUser(user.getEmail());
     }
     
-    
+    public void updateClient(){
+         boolean validation=true;
+         
+        if(!user.getEmail().equals(ancien_mail) && !validateEmail()) {
+            validation=false;
+            addError("L'adresse mail que vous avez saisie est liée à un autre profil");
+        }
+        if(!user.getPassword().equals(user.getPasswordConfirm())){
+            validation=false;
+            addError("Les deux mots de passe saisis ne sont pas identiques");
+        }
+        int res=-1;
+        if(validation)
+        res=writeManager.updateUser(user);
+        
+        
+        HttpSession session = getHttpSession();
+        session.setAttribute("USER", user.getEmail());
+        session.setAttribute("PROFIL", user.getProfil());
+        try {
+        if(res==1){
+           
+                redirect("espaceClient.xhtml");
+            
+        }else
+            addError("erreur de mise à jour de compte");
+         
+        } catch (IOException ex) {
+                Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
     public void addClient(){
         // validation
         boolean validation=true;
@@ -68,11 +112,12 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         int res=-1;
         if(validation)
         res=writeManager.addUser(user);
-        
+        ancien_mail=user.getEmail();
         
         HttpSession session = getHttpSession();
         session.setAttribute("USER", user.getEmail());
         session.setAttribute("PROFIL", user.getProfil());
+        connected=true;
         try {
         if(res==1){
            
@@ -90,11 +135,13 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         boolean isConnected=readManager.isConnected(user);
         try { 
         if(isConnected){
+            connected=true;
                 HttpSession session = getHttpSession();
                 session.setAttribute("USER", user.getEmail());
                 user=readManager.getUserByMail(user.getEmail());
                 session.setAttribute("USER", user.getEmail());
                 session.setAttribute("PROFIL", user.getProfil());
+                ancien_mail=user.getEmail();
                 redirect("espaceClient.xhtml");
             
         }else

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:include src="head.xhtml"/>
+    
+    
+<h:body class="home">
+    <div class="site-wrapper animsition" data-animsition-in="fade-in" data-animsition-out="fade-out">
+        <ui:include src="header.xhtml" />
+        
+         <div class="page-wrapper">
+            <div class="breadcrumb">
+               <div class="container">
+                  <ul>
+                     <li><a href="index.xhtml" class="active">Accueil</a></li>
+                     <li>Mes informations</li>
+                  </ul>
+               </div>
+            </div>
+            <section class="contact-page inner-page">
+               <div class="container">
+                  <div class="row">
+                     <!-- REGISTER -->
+                     <div class="col-md-8">
+                        <div class="widget">
+                           <div class="widget-body">
+                               <h:form id="form">
+                                   <p:messages id="message" showDetail="true" autoUpdate="true" closable="true" />
+                                 <div class="row">
+                                    <div class="form-group col-sm-6">
+                                       <label for="exampleInputEmail1">Prenom</label>
+                                       <p:inputText styleClass="form-control" type="text" value="#{userManagedBean.user.prenom}" placeholder="Saisir prenom" id="example-text-input"/> 
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                       <label for="exampleInputEmail1">Nom</label>
+                                       <p:inputText styleClass="form-control" type="text" value="#{userManagedBean.user.nom}" placeholder="Saisir nom" id="example-text-input-2"/> 
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                       <label for="exampleInputEmail1">Email</label>
+                                        <p:inputText styleClass="form-control" type="email" value="#{userManagedBean.user.email}" id="exampleInputEmail1"  placeholder="Saisir email"/> <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre email avec quelqu'un d'autre.</small> 
+                                        
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                       <label for="exampleInputEmail1">Telephone</label>
+                                       <p:inputText styleClass="form-control" type="tel" placeholder="N Tel" value="#{userManagedBean.user.telephone}" id="example-tel-input-3"/> <small class="form-text text-muted">Nous ne partagerons jamais votre numero de telephone avec quelqu'un d'autre.</small> 
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                       <label for="exampleInputPassword1">Mot de passe</label>
+                                       <p:inputText styleClass="form-control" type="password"  value="#{userManagedBean.user.password}" id="exampleInputPassword1" placeholder="Mot de passe"/> 
+                                       <label for="exampleInputPassword1">Etes-vous un Restaurateur</label>
+                                       <p:selectBooleanCheckbox value="#{userManagedBean.user.profil}" />
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                       <label for="exampleInputPassword1">Repeter le mot de passe</label>
+                                       <p:inputText styleClass="form-control" type="password" value="#{userManagedBean.user.passwordConfirm}" id="exampleInputPassword2" placeholder="Mot de passe" /> 
+                                      
+                                    </div>
+                                     
+                                   
+                                     
+                                 </div>
+                                   
+                                       
+                                 
+                                 <div class="row">
+                                   
+                                    <div class="col-sm-4">
+                                        <p><p:commandButton value="Mettre a jour" class="btn theme-btn"  update="form:message" actionListener="#{userManagedBean.updateClient()}"/></p>
+                                         
+                                    </div>
+                                 </div>
+                              </h:form>
+                           </div>
+                           <!-- end: Widget -->
+                        </div>
+                        <!-- /REGISTER -->
+                     </div>
+                  </div>
+               </div>
+            </section>
+
+    <ui:include src="footer.xhtml"/>
+</div>
+</div>    
+    
+</h:body>
+</html>

@@ -15,16 +15,18 @@
 <br/><br/>
 <div class="container">
     <div class="check-sec">	 
+        
         <div class="col-md-3 cart-total">
+            
             <a class="continue"> Mon profil</a>
             <div class="price-details">
-                <h3>Mes reservations</h3>
-                <h3>Mes avis</h3>
-                <h3>Mes favoris</h3>
-                <h3>Mon espace fid�lit�</h3>
-                <h3>Mes informations</h3>
+                <p:column><h3><a href="#">Mes reservations</a></h3></p:column>
+                <p:column><h3><a href="#">Mon historique</a></h3></p:column>
+                <p:column rendered="#{userManagedBean.user.profil}"><h3><a href="#">Mes restaurants</a></h3></p:column>
+                <p:column><h3><a  href="mesInformations.xhtml"> Mes informations</a></h3></p:column>
+                
             </div>	
-            <a class="order" href="#">Se d�connecter</a>
+            <a class="order" href="#">Se deconnecter</a>
         </div>
         <div class="col-md-9 cart-items">
             <h1>Mes reservations</h1>

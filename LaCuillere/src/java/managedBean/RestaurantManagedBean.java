@@ -63,7 +63,7 @@ public class RestaurantManagedBean extends ParentManagedBean implements Serializ
     public void addRestaurant(){
         
         try {
-            if(packageFile!=null){
+            if(packageFile!=null && packageFile.getSize()!=0){
                 //ByteArrayOutputStream output=new ByteArrayOutputStream();
                 try {
                     byte[] bytes= new byte[4096];

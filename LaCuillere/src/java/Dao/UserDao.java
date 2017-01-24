@@ -30,6 +30,7 @@ public class UserDao {
     private final String ADD_RESTAURANT_TO_USER="INSERT INTO T_USER_RESTAURANT(MAIL,ID_RESTAURANT) VALUES(?,?)";
     private final String SELECT_USER_BY_EMAIL="SELECT * FROM T_USER WHERE MAIL=?";
     private final String SELECT_CONNECTED_USER="SELECT * FROM T_USER WHERE MAIL=? AND PASSWORD=?";
+    private final String UPDATE_USER="UPDATE T_USER SET NOM=?, PRENOM=? , PASSWORD=? , TELEPHONE=?, PROFIL=?   WHERE MAIL=?";
 
     
     public void setDataSource(DataSource dataSource){
@@ -265,5 +266,43 @@ public class UserDao {
 			
         }
         return user;
+    }
+
+    public int updateUser(User user) {
+        Connection con = null;
+            int rs=0;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(UPDATE_USER);
+            int i=1;
+            ps.setString(i++, user.getNom());
+            ps.setString(i++, user.getPrenom());
+            
+            ps.setString(i++, user.getPassword());
+            ps.setString(i++, user.getTelephone());
+            if(user.getProfil()){
+                ps.setInt(i++,1);
+            }else
+                ps.setInt(i++,0);
+            
+            ps.setString(i++, user.getEmail());
+            
+            rs = ps.executeUpdate();
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return rs;
     }
 }

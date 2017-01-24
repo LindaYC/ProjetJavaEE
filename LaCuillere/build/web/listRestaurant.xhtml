@@ -23,21 +23,22 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-3">
-                            <p><span class="primary-color"><strong>3</strong></span> Restaurants trouv� !</p></div>
+                            <p><span class="primary-color"><strong>3</strong></span> Restaurants trouve !</p></div>
                         
                         <div class="col-sm-9">
                             <select class="custom-select pull-right">
                                 <option selected="true" >Pertinence</option>
                                 <option value="1">Promotion</option>
                                 <option value="2">Note</option>
-                                <option value="3">Popularit�</option>
+                                <option value="3">Popularite</option>
                                 <option value="2">Prix croissant</option>
-                                <option value="3">Prix d�croissant</option>
+                                <option value="3">Prix decroissant</option>
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <!-- //results show -->
             <section class="restaurants-page">
                 <div class="container">
@@ -55,7 +56,7 @@
                                         <ul>
                                             <li>
                                                 <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"/> <span class="custom-control-indicator"></span> <span class="custom-control-description">Fran�ais</span> </label>
+                                                    <input type="checkbox" class="custom-control-input"/> <span class="custom-control-indicator"></span> <span class="custom-control-description">Francais</span> </label>
                                             </li>
                                             <li>
                                                 <label class="custom-control custom-checkbox">
@@ -91,7 +92,19 @@
                             <!-- end:Pricing widget -->
                         </div>
                         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-9">
-                            <div class="bg-gray restaurant-entry">
+                           <h:form id="form">
+                               <p:dataGrid var="restaurant" value="#{listeRestaurantManagedBean.listeRestaurantSearch}" columns="1"  style="color:#f30 ;background-color: #f30 !important;" 
+        rows="12" paginator="true" id="restaurant"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+        rowsPerPageTemplate="5,10,25,50">
+ 
+                                   <f:facet name="header">
+            Résultat recherche :
+        </f:facet> 
+ 
+                       
+            
+             <div class="bg-gray restaurant-entry">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
                                         <div class="entry-logo">
@@ -100,9 +113,10 @@
                                         </div>
                                         <!-- end:Logo -->
                                         <div class="entry-dscr">
-                                            <h5><a href="#">Caf� Harcourt By Dalloyau</a></h5> <span>6 Rue de Lota 75116 Paris France <a href="#">...</a></span>
+                                            <h5><a href="#"><h:outputText value="#{restaurant.nom}" /></a></h5> 
+                                            <span><h:outputText value="#{restaurant.adresse}" /></span>
                                             <ul class="list-inline">
-                                                <li class="list-inline-item"><i class="fa fa-check"></i> Prix moyen 100,00 euros</li>
+                                                <li class="list-inline-item"><i class="fa fa-check"></i> Prix moyen <h:outputText value="#{restaurant.prixMoyen}" /> euros</li>
                                             </ul>
                                         </div>
                                         <!-- end:Entry description -->
@@ -118,38 +132,38 @@
                                 </div>
                                 <!--end:row -->
                             </div>
-                            <!-- end:Restaurant entry -->
-                            <div class="bg-gray restaurant-entry">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
-                                        <div class="entry-logo">
-                                            <a class="img-fluid" href="#"><img src="images/resto5.jpg" alt="Food logo"/></a>
-                                        </div>
-                                        <!-- end:Logo -->
-                                        <div class="entry-dscr">
-                                            <h5><a href="#">Les Tablettes - Jean-Louis Nomicos</a></h5> <span>16, avenue Bugeaud 75016 Paris France <a href="#">...</a></span>
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item"><i class="fa fa-check"></i> Prix moyen 200,00 euros</li>
-                                            </ul>
-                                        </div>
-                                        <!-- end:Entry description -->
-                                    </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-4 text-xs-center">
-                                        <div class="right-content bg-white">
-                                            <div class="right-review">
-                                                <div class="rating-block"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </div>
-                                                <p> 245 Avis</p> <a href="profile.html" class="btn theme-btn-dash">Voir Menu</a> </div>
-                                        </div>
-                                        <!-- end:right info -->
-                                    </div>
-                                </div>
-                                <!--end:row -->
-                            </div>
-                            <!-- end:Restaurant entry -->
+          
+ 
+    </p:dataGrid>
+ <!--
+    <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty dataGridView.selectedCar}" columnClasses="label,value">
+                <f:facet name="header">
+                    <p:graphicImage name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif"/> 
+                </f:facet>
+ 
+                <h:outputText value="Id:" />
+                <h:outputText value="#{dataGridView.selectedCar.id}" />
+ 
+                <h:outputText value="Year" />
+                <h:outputText value="#{dataGridView.selectedCar.year}" />
+ 
+                <h:outputText value="Color:" />
+                <h:outputText value="#{dataGridView.selectedCar.color}" style="color:#{dataGridView.selectedCar.color}"/>
+ 
+                <h:outputText value="Price" />
+                <h:outputText value="$#{dataGridView.selectedCar.price}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog> -->
+</h:form>
+           
                         </div>
                     </div>
                 </div>
             </section>
+              
 <!-- Include du footer -->  
 </div>
     <ui:include src="footer.xhtml"/>

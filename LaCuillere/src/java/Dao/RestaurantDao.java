@@ -147,6 +147,7 @@ public class RestaurantDao {
                 result.add(rest);
                 rest.setEmail(rs.getString("EMAIL"));
                 rest.setNumPhone(rs.getString("NUM_PHONE"));
+                rest.setPrixMoyen(rs.getInt("PRIX_MOYEN"));
                 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 

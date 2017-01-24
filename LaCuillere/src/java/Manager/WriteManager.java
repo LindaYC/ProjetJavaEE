@@ -106,5 +106,9 @@ public class WriteManager {
             
             return res;
     }
+
+    public int updateUser(User user) {
+        return userDao.updateUser(user);
+    }
     
 }

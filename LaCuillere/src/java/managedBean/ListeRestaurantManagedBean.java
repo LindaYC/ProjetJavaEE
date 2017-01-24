@@ -30,9 +30,19 @@ public class ListeRestaurantManagedBean extends ParentManagedBean implements Ser
     private List<String> categories;
     private List<Restaurant> listeRestaurantSearch;
     
+    
     @Autowired
     private ReadManager readManager;
 
+    public List<Restaurant> getListeRestaurantSearch() {
+        return listeRestaurantSearch;
+    }
+
+    public void setListeRestaurantSearch(List<Restaurant> listeRestaurantSearch) {
+        this.listeRestaurantSearch = listeRestaurantSearch;
+    }
+
+    
     public String getCategorieSelected() {
         return categorieSelected;
     }
