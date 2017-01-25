@@ -85,5 +85,9 @@ public class ReadManager implements Serializable{
     public User getUserByMail(String email) {
         return userDao.getByMail(email);
     }
+
+    public byte[] getImageRestaurantById(Integer valueOf) {
+        return restaurantDao.getImageById(valueOf);
+    }
     
 }

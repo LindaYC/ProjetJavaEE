@@ -6,6 +6,7 @@
 package managedBean;
 
 import Manager.ReadManager;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,8 +14,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import model.Categorie;
 import model.Restaurant;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -91,6 +96,23 @@ public class ListeRestaurantManagedBean extends ParentManagedBean implements Ser
             Logger.getLogger(ListeRestaurantManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public StreamedContent getImage() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            System.out.println("Chargement image : première phase");
+            return new DefaultStreamedContent();
+        }
+        else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            String idRestaurant = context.getExternalContext().getRequestParameterMap().get("idRestaurant");
+            System.out.println("Chargement image : deuxième phase");
+            byte[] bytes=readManager.getImageRestaurantById(Integer.valueOf(idRestaurant));
+            return new DefaultStreamedContent(new ByteArrayInputStream(bytes));
+        }
     }
     
 }

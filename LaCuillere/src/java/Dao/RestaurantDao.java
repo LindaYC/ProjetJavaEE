@@ -31,6 +31,7 @@ public class RestaurantDao {
     
     private static final String INSERT_RESTAURANT="INSERT INTO T_RESTAURANT(ID_RESTAURANT,NOM,ADRESSE,VILLE,NUM_PHONE,EMAIL,NB_PLACE_MAX,TIME_OUVERTURE,TIME_FERMETURE,CATEGORIE,PHOTO,PRIX_MOYEN) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     private String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1=1";
+    private String GET__IMAGE_RESTAURANT_BY_ID="SELECT * FROM T_RESTAURANT WHERE ID_RESTAURANT=?";
     private String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESTAURANT')";
     private DataSource dataSource;
 
@@ -215,6 +216,57 @@ public class RestaurantDao {
         }
         return rs;
         
+    }
+
+    public byte[] getImageById(Integer idRestaurant) {
+       Connection con = null;
+        ResultSet rs=null;
+        byte[] result=null;
+        
+        
+        
+         try {
+
+        con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(GET__IMAGE_RESTAURANT_BY_ID);
+            ps.setInt(1, idRestaurant);
+          
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                
+                byte[] buf = new byte[1024];
+                InputStream in = rs.getBinaryStream("PHOTO");
+                int n = 0;
+                while ((n=in.read(buf))>=0)
+                {
+                   baos.write(buf, 0, n);
+                }
+                in.close();
+               
+                
+                result=baos.toByteArray();
+                
+            }
+            rs.close();
+            con.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RestaurantDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+         
+         return result;
     }
     
 }

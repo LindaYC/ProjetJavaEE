@@ -108,8 +108,9 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
                                         <div class="entry-logo">
-                                            <a class="img-fluid" href="#"><img src="images/resto2.jpg" alt="Food logo"/></a>
-                                            
+                                            <p:graphicImage  value="#{listeRestaurantManagedBean.image}">
+                                                <f:param name="idRestaurant" value="#{restaurant.idRestaurant}" />
+                                                </p:graphicImage>
                                         </div>
                                         <!-- end:Logo -->
                                         <div class="entry-dscr">

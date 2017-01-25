@@ -5,11 +5,17 @@
  */
 package model;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Time;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.sql.rowset.serial.SerialBlob;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -35,6 +41,20 @@ public class Restaurant {
         return packageBlobRead;
     }
 
+    public StreamedContent getImage() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            return new DefaultStreamedContent(new ByteArrayInputStream(packageBlobRead.toByteArray()));
+        }
+    }
+
+    
     public int getPrixMoyen() {
         return prixMoyen;
     }
