@@ -6,6 +6,7 @@
 package Manager;
 
 import Dao.CategorieDao;
+import Dao.ReservationDAO;
 import Dao.RestaurantDao;
 import Dao.UserDao;
 import java.io.Serializable;
@@ -19,10 +20,19 @@ import model.User;
  * @author MLBaiche
  */
 public class ReadManager implements Serializable{
+    private ReservationDAO reservationDao;
     
     private UserDao userDao;
     
     private CategorieDao categorieDao;
+
+    public ReservationDAO getReservationDao() {
+        return reservationDao;
+    }
+
+    public void setReservationDao(ReservationDAO reservationDao) {
+        this.reservationDao = reservationDao;
+    }
     
     private RestaurantDao restaurantDao;
 
@@ -68,7 +78,7 @@ public class ReadManager implements Serializable{
 
     public List<Restaurant> search(String nom, String ville, String categorieSelected) {
        
-        String categorie="";
+        String categorie=categorieSelected;
         List<Categorie> categories = categorieDao.loadAll();
         
         for(Categorie cat : categories){

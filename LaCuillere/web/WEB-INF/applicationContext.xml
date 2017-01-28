@@ -43,7 +43,9 @@
     <bean id="readManager" class="Manager.ReadManager">
     <property name="userDao"  ref="userDao"/>
      <property name="categorieDao" ref="categorieDao"/>
-      <property name="restaurantDao" ref="restaurantDao"/>  
+      <property name="restaurantDao" ref="restaurantDao"/> 
+      <property name="reservationDao" ref="reservationDao"/>  
+     
         
     </bean>
     
@@ -57,6 +59,11 @@
 
 
     <bean id="userDao" class="Dao.UserDao">
+    <property name="dataSource"  ref="dataSource"/>  
+        
+    </bean>
+    
+     <bean id="reservationDao" class="Dao.ReservationDAO">
     <property name="dataSource"  ref="dataSource"/>  
         
     </bean>

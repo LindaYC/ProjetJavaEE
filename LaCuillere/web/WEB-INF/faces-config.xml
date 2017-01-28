@@ -7,5 +7,9 @@
     <application>
     <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 </application>
-
+    <managed-bean>
+        <managed-bean-name>reservationManagedBean</managed-bean-name>
+        <managed-bean-class>managedBean.ReservationManagedBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>

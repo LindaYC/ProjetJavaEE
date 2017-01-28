@@ -30,7 +30,7 @@ import model.Restaurant;
 public class RestaurantDao {
     
     private static final String INSERT_RESTAURANT="INSERT INTO T_RESTAURANT(ID_RESTAURANT,NOM,ADRESSE,VILLE,NUM_PHONE,EMAIL,NB_PLACE_MAX,TIME_OUVERTURE,TIME_FERMETURE,CATEGORIE,PHOTO,PRIX_MOYEN) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-    private String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1=1";
+    private String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1 = 1";
     private String GET__IMAGE_RESTAURANT_BY_ID="SELECT * FROM T_RESTAURANT WHERE ID_RESTAURANT=?";
     private String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESTAURANT')";
     private DataSource dataSource;
@@ -64,7 +64,7 @@ public class RestaurantDao {
             ps.setTime(i++, restaurant.getHeureFermeture());
             ps.setString(i++, restaurant.getCategorie().getNom());
             
-            ps.setBinaryStream(i++, restaurant.getPackageBlob(),restaurant.getTaillePhoto());
+            ps.setBinaryStream(i++, restaurant.getBlob(),restaurant.getTaillePhoto());
             ps.setInt(i++, restaurant.getPrixMoyen());
             
             rs = ps.executeUpdate();
@@ -111,7 +111,7 @@ public class RestaurantDao {
            
         }
             
-        if(categorie!=null){
+        if(categorie!=null && !categorie.equals("")){
             SEARCH_RESTAURANT+=" AND CATEGORIE LIKE ?";
            
             }
@@ -123,7 +123,7 @@ public class RestaurantDao {
             ps.setString(i++, "%"+nom+"%");
             }
         
-        if(ville!=null){
+        if(ville!=null && !categorie.equals("")){
            
             ps.setString(i++, "%"+ville+"%");
         }
@@ -199,7 +199,7 @@ public class RestaurantDao {
                 rs=resSet.getInt(1);
             }
             
-            System.out.println("Clé primaine généré : "+rs);
+            System.out.println("Clé primaire généré : "+rs);
             
             
             
@@ -268,5 +268,65 @@ public class RestaurantDao {
          
          return result;
     }
+    public List<Restaurant> getRestaurantByUser(/*@RequestParam("id")*/ String mail) throws IOException {
+        Connection con = null;
+        ResultSet rs=null;
+        List<Restaurant> result=new ArrayList<Restaurant>();
+         try {              
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(SEARCH_RESTAURANT+mail+";");        
+            rs = ps.executeQuery();
+            while(rs.next()){
+                 Restaurant rest=new Restaurant();
+                rest.setIdRestaurant(rs.getInt("ID_RESTAURANT"));
+                rest.setNom(rs.getString("NOM"));
+                rest.setAdresse(rs.getString("ADRESSE"));
+                rest.setVille(rs.getString("VILLE"));
+                rest.setCapacite (rs.getInt("NB_PLACE_MAX"));
+                Categorie cat= new Categorie();
+                cat.setNom(rs.getString("CATEGORIE"));
+                rest.setCategorie(cat);
+                rest.setEmail(rs.getString("EMAIL"));
+                rest.setNumPhone(rs.getString("NUM_PHONE"));
+                rest.setPrixMoyen(rs.getInt("PRIX_MOYEN"));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+                InputStream in = rs.getBinaryStream("PHOTO");
+                int n = 0;
+                while ((n=in.read(buf))>=0)
+                {
+                   baos.write(buf, 0, n);
+                }                
+                rest.setPackageBlobRead(baos);
+            }
+            rs.close();
+            con.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return result;
+        
+    }
     
+    public int getNbrOfRestaurantsByUser(String email) throws SQLException{
+        Connection con = null;
+        ResultSet rs = null;
+        int nbrOfRestaurants = 0;
+        PreparedStatement ps = con.prepareStatement(SEARCH_RESTAURANT+email+";");
+            if(email != null){
+                rs = ps.executeQuery();
+                nbrOfRestaurants = rs.getFetchSize();
+            } else 
+                System.out.println("0 restaurants trouvés !");
+            
+            return nbrOfRestaurants;
+    }
 }

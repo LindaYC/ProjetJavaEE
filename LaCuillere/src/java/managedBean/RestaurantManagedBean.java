@@ -32,6 +32,7 @@ public class RestaurantManagedBean extends ParentManagedBean implements Serializ
     private Restaurant restaurant;
     private List<String> allCategorie;
     private UploadedFile packageFile;
+    private List<Restaurant> allRestaurants;
     
     @Autowired
     private WriteManager writeManager;
@@ -57,7 +58,6 @@ public class RestaurantManagedBean extends ParentManagedBean implements Serializ
     public void setPackageFile(UploadedFile packageFile) {
         this.packageFile = packageFile;
     }
-    
     
    
     public void addRestaurant(){
@@ -106,16 +106,14 @@ public class RestaurantManagedBean extends ParentManagedBean implements Serializ
         this.allCategorie = allCategorie;
     }
     
-    /**
-     * @return the restaurant
-     */
     public Restaurant getRestaurant() {
         return restaurant;
     }
 
-    /**
-     * @param restaurant the restaurant to set
-     */
+    public List<Restaurant> getRestaurantByUser() {
+        return allRestaurants;
+    }
+    
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }

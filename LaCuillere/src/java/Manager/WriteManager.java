@@ -8,12 +8,14 @@ package Manager;
 import Dao.AnnonceDao;
 import Dao.CategorieDao;
 import Dao.RestaurantDao;
+import Dao.ReservationDAO;
 import Dao.UserDao;
 import java.util.List;
 import model.Annonce;
 import model.Categorie;
 import model.Restaurant;
 import model.User;
+import model.Reservation;
 
 /**
  *
@@ -25,6 +27,7 @@ public class WriteManager {
     private CategorieDao categorieDao;
     private RestaurantDao restaurantDao;
     private AnnonceDao annonceDao;
+    private ReservationDAO reservationDao;
 
     public AnnonceDao getAnnonceDao() {
         return annonceDao;
@@ -52,12 +55,20 @@ public class WriteManager {
         this.restaurantDao = restaurantDao;
     }
     
-    
+     public int addReservation(Reservation reservation) {
+        
+       return reservationDao.createReservation(reservation);
+        
+    }
     
     public int addUser(User user) {
         
        return userDao.addUser(user);
         
+    }
+    
+    public ReservationDAO getReservationDao() {
+        return reservationDao;
     }
 
     /**
@@ -89,6 +100,7 @@ public class WriteManager {
         }
         if(!findCategorie){
                 categorieDao.insertCategorie(restaurant.getCategorie().getNom().toUpperCase());
+                restaurant.getCategorie().setNom(restaurant.getCategorie().getNom().toUpperCase());
             }
             
             // generation de l'id restaurant

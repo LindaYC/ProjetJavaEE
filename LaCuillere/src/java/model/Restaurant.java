@@ -77,15 +77,14 @@ public class Restaurant {
     }
 
     
-    public FileInputStream getPackageBlob() {
+    public FileInputStream getBlob() {
         return packageBlob;
     }
 
     public void setPackageBlob(FileInputStream packageBlob) {
         this.packageBlob = packageBlob;
     }
-     
-    
+        
     
     public Categorie getCategorie() {
         return categorie;
@@ -181,7 +180,6 @@ public class Restaurant {
 
     public int getSizeImage() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }  
     
 }
