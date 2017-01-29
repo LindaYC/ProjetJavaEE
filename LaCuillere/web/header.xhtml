@@ -17,14 +17,26 @@
                         <ul class="nav navbar-nav">
                             
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mon compte</a>
-                                <div class="dropdown-menu"> 
-                                    <p:column rendered="#{!userManagedBean.connected}"> <a class="dropdown-item" href="connectClient.xhtml">Se connecter</a> </p:column>
-                                    <p:column rendered="#{userManagedBean.connected}"> <a class="dropdown-item" href="espaceClient.xhtml">Mon espace</a> </p:column>
-                                    <p:column> <a class="dropdown-item" href="index.xhtml">Accueil</a> </p:column>
-                                    <p:column rendered="#{userManagedBean.connected}">  <a class="dropdown-item" href="connectClient.xhtml">Se deconnecter</a> </p:column>
-                                    
-                                </div>
+                                  <h:form>
+                                   <p:growl id="messages"/>
+
+                                   <p:menubar>
+                                        <p:submenu label="Mon compte" >
+                                            <p:menuitem value="Se connecter" rendered="#{!userManagedBean.connected}" style="background-color:#437132 !important; color:#437132;" url="connectClient.xhtml" icon="ui-icon-power"/>
+                                            <p:menuitem  rendered="#{userManagedBean.connected}" value="Mon espace" style="background-color:#437132 !important; color:#437132;" url="espaceClient.xhtml" icon="ui-icon-home" />
+                                            <p:menuitem rendered="#{userManagedBean.connected}" value="Se deconnecter" style="background-color:#437132 !important; color:#437132;" action="#{userManagedBean.deconnexion()}" icon="ui-icon-close" />
+                                             
+                                            <p:separator />
+                                            <p:menuitem value="Accueil" url="index.xhtml" icon="ui-icon-extlink" style="background-color:#437132 !important; color:#437132;" />
+                                        </p:submenu>
+
+                                       
+
+                                    </p:menubar>
+                                </h:form>
+                                
+                                  
+                                  
                             </li>
                         </ul>
                     </div>

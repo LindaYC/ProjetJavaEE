@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,5 +151,15 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         } catch (IOException ex) {
                 Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             }
+    }
+    
+    public void deconnexion(){
+         HttpSession session = getHttpSession();
+         session.invalidate();
+        try {
+            redirect("index.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

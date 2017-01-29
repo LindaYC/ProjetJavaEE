@@ -25,5 +25,5 @@
 }
 
 .ui-datagrid {
-    background: #f30;
+    background:rgba(0,0,0,0.6) !important;
 }
