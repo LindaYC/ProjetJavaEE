@@ -22,6 +22,7 @@
 
                                    <p:menubar>
                                         <p:submenu label="Mon compte" >
+                                             <p:menuitem value="S'inscrire" rendered="#{!userManagedBean.connected}" style="background-color:#437132 !important; color:#437132;" url="ajoutClient.xhtml" icon="ui-icon-plus"/>
                                             <p:menuitem value="Se connecter" rendered="#{!userManagedBean.connected}" style="background-color:#437132 !important; color:#437132;" url="connectClient.xhtml" icon="ui-icon-power"/>
                                             <p:menuitem  rendered="#{userManagedBean.connected}" value="Mon espace" style="background-color:#437132 !important; color:#437132;" url="espaceClient.xhtml" icon="ui-icon-home" />
                                             <p:menuitem rendered="#{userManagedBean.connected}" value="Se deconnecter" style="background-color:#437132 !important; color:#437132;" action="#{userManagedBean.deconnexion()}" icon="ui-icon-close" />

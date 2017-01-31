@@ -93,12 +93,14 @@
                         </div>
                         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-9">
                            <h:form id="form">
-                               <p:dataGrid var="restaurant" value="#{listeRestaurantManagedBean.listeRestaurantSearch}" columns="1" 
+                               <p:dataGrid var="restaurant" value="#{listeRestaurantManagedBean.listeRestaurantSearch}" style="background: none !important; color: #f30 !important;
+    background: none !important;
+    background-image: none !important;" columns="1"  
         rows="12" paginator="true" id="restaurant"
         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
         rowsPerPageTemplate="5,10,25,50">
  
-                                   <f:facet name="header">
+                                   <f:facet name="header" >
             Résultat recherche :
         </f:facet> 
  
@@ -114,11 +116,17 @@
                                         </div>
                                         <!-- end:Logo -->
                                         <div class="entry-dscr">
-                                            <h5><a href="#"><h:outputText value="#{restaurant.nom}" /></a></h5> 
-                                            <span><h:outputText value="#{restaurant.adresse}" /></span>
+                                            <h5><a href="#"><h:outputText value="#{restaurant.nom}" /></a></h5>
+                                            
+                                                
+                                                <h5><a href="#"><h:outputText value="#{restaurant.categorie.nom.toLowerCase()}" /></a></h5> 
+                                            
+                                            <span><a href="#"><h:outputText value="#{restaurant.adresse}" /></a></span>
+                                              
                                             <ul class="list-inline">
                                                 <li class="list-inline-item"><i class="fa fa-check"></i> Prix moyen <h:outputText value="#{restaurant.prixMoyen}" /> euros</li>
                                             </ul>
+                                          
                                         </div>
                                         <!-- end:Entry description -->
                                     </div>
@@ -126,7 +134,7 @@
                                         <div class="right-content bg-white">
                                             <div class="right-review">
                                                 <div class="rating-block"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </div>
-                                                <p> 150 Avis</p> <a href="profile.html" class="btn theme-btn-dash">Voir Menu</a> </div>
+                                                <p> 150 Avis</p><p:commandButton style="background: none;color:#f30;" styleClass="btn theme-btn-dash" action="#{menuManagedBean.listMenu(restaurant.idRestaurant)}" value="Voir Menu"/></div>
                                         </div>
                                         <!-- end:right info -->
                                     </div>

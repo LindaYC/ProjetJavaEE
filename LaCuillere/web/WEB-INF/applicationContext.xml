@@ -44,7 +44,10 @@
     <property name="userDao"  ref="userDao"/>
      <property name="categorieDao" ref="categorieDao"/>
       <property name="restaurantDao" ref="restaurantDao"/> 
-      <property name="reservationDao" ref="reservationDao"/>  
+      <property name="reservationDao" ref="reservationDao"/>
+      <property name="menuDao" ref="menuDao"/>
+      
+      
      
         
     </bean>
@@ -67,6 +70,12 @@
     <property name="dataSource"  ref="dataSource"/>  
         
     </bean>
+    
+       <bean id="menuDao" class="Dao.MenuDao">
+    <property name="dataSource"  ref="dataSource"/>  
+        
+    </bean>
+    
     
     <bean id="categorieDao" class="Dao.CategorieDao">
     <property name="dataSource"  ref="dataSource"/>  

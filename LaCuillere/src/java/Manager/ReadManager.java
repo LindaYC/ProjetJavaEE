@@ -6,12 +6,14 @@
 package Manager;
 
 import Dao.CategorieDao;
+import Dao.MenuDao;
 import Dao.ReservationDAO;
 import Dao.RestaurantDao;
 import Dao.UserDao;
 import java.io.Serializable;
 import java.util.List;
 import model.Categorie;
+import model.Menu;
 import model.Restaurant;
 import model.User;
 
@@ -26,6 +28,17 @@ public class ReadManager implements Serializable{
     
     private CategorieDao categorieDao;
 
+    private MenuDao menuDao;
+
+    public MenuDao getMenuDao() {
+        return menuDao;
+    }
+
+    public void setMenuDao(MenuDao menuDao) {
+        this.menuDao = menuDao;
+    }
+    
+    
     public ReservationDAO getReservationDao() {
         return reservationDao;
     }
@@ -78,7 +91,7 @@ public class ReadManager implements Serializable{
 
     public List<Restaurant> search(String nom, String ville, String categorieSelected) {
        
-        String categorie=categorieSelected;
+        String categorie="";
         List<Categorie> categories = categorieDao.loadAll();
         
         for(Categorie cat : categories){
@@ -88,6 +101,15 @@ public class ReadManager implements Serializable{
                 categorie=cat.getNom().toUpperCase();
             }
     }
+        if(categorie.length()==0){
+            categorie=null;
+        }
+        if(ville!=null && ville.length()==0){
+            ville=null;
+        }
+        if(nom!=null && nom.length()==0){
+            nom=null;
+        }
 
         return restaurantDao.search(nom,ville,categorie);
     }
@@ -98,6 +120,10 @@ public class ReadManager implements Serializable{
 
     public byte[] getImageRestaurantById(Integer valueOf) {
         return restaurantDao.getImageById(valueOf);
+    }
+
+    public List<Menu> getListMenu(int idRestaurant) {
+        return menuDao.loadListMenuByRestaurant(idRestaurant);
     }
     
 }

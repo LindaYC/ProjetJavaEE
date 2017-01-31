@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,9 +31,9 @@ import model.Restaurant;
 public class RestaurantDao {
     
     private static final String INSERT_RESTAURANT="INSERT INTO T_RESTAURANT(ID_RESTAURANT,NOM,ADRESSE,VILLE,NUM_PHONE,EMAIL,NB_PLACE_MAX,TIME_OUVERTURE,TIME_FERMETURE,CATEGORIE,PHOTO,PRIX_MOYEN) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-    private String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1 = 1";
-    private String GET__IMAGE_RESTAURANT_BY_ID="SELECT * FROM T_RESTAURANT WHERE ID_RESTAURANT=?";
-    private String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESTAURANT')";
+    
+    private static final String GET__IMAGE_RESTAURANT_BY_ID="SELECT * FROM T_RESTAURANT WHERE ID_RESTAURANT=?";
+    private static final String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESTAURANT')";
     private DataSource dataSource;
 
     public DataSource getDataSource() {
@@ -92,6 +93,7 @@ public class RestaurantDao {
             }
 
     public List<Restaurant> search(String nom, String ville, String categorie) {
+        String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1=1";
         Connection con = null;
         ResultSet rs=null;
         List<Restaurant> result=new ArrayList<Restaurant>();
@@ -99,38 +101,39 @@ public class RestaurantDao {
         
         
          try {
-            
+            System.out.println("Filtres Saisies : [Nom : "+nom+" ,Ville : "+ville+" ,Categorie :"+categorie+"]");
             int i=1;
-            if(nom!=null){
-            SEARCH_RESTAURANT+=" AND NOM LIKE ?";
+            if(nom!=null && nom.length()!=0){
+            SEARCH_RESTAURANT+=" AND NOM=?";
            
             }
         
-        if(ville!=null){
-            SEARCH_RESTAURANT+=" AND VILLE LIKE ?";
+        if(ville!=null && ville.length()!=0){
+            SEARCH_RESTAURANT+=" AND VILLE=?";
            
         }
             
-        if(categorie!=null && !categorie.equals("")){
-            SEARCH_RESTAURANT+=" AND CATEGORIE LIKE ?";
+        if(categorie!=null && categorie.length()!=0){
+            SEARCH_RESTAURANT+=" AND CATEGORIE=?";
            
             }
-        
+             System.out.println("Requête Saisie : "+SEARCH_RESTAURANT);
         con = dataSource.getConnection();
             PreparedStatement ps = con.prepareStatement(SEARCH_RESTAURANT);
-           if(nom!=null){
+            
+           if(nom!=null && nom.length()!=0){
           
-            ps.setString(i++, "%"+nom+"%");
+            ps.setString(i++,nom);
             }
         
-        if(ville!=null && !categorie.equals("")){
+        if(ville!=null && ville.length()!=0){
            
-            ps.setString(i++, "%"+ville+"%");
+            ps.setString(i++, ville);
         }
             
-        if(categorie!=null){
+        if(categorie!=null && categorie.length()!=0){
            
-            ps.setString(i++, "%"+categorie+"%");
+            ps.setString(i++, categorie);
             }
           
             rs = ps.executeQuery();
@@ -150,19 +153,6 @@ public class RestaurantDao {
                 rest.setNumPhone(rs.getString("NUM_PHONE"));
                 rest.setPrixMoyen(rs.getInt("PRIX_MOYEN"));
                 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                
-                byte[] buf = new byte[1024];
-                InputStream in = rs.getBinaryStream("PHOTO");
-                int n = 0;
-                while ((n=in.read(buf))>=0)
-                {
-                   baos.write(buf, 0, n);
-                }
-                in.close();
-                byte[] bytes = baos.toByteArray();
-                rest.setPackageBlobRead(baos);
-                
                 System.out.println("Restaurant trouves : "+rest.getNom());
             }
             rs.close();
@@ -170,8 +160,6 @@ public class RestaurantDao {
             
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(RestaurantDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (con != null) {
             try {
@@ -270,11 +258,12 @@ public class RestaurantDao {
     }
     public List<Restaurant> getRestaurantByUser(/*@RequestParam("id")*/ String mail) throws IOException {
         Connection con = null;
+        String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1=1";
         ResultSet rs=null;
         List<Restaurant> result=new ArrayList<Restaurant>();
          try {              
             con = dataSource.getConnection();
-            PreparedStatement ps = con.prepareStatement(SEARCH_RESTAURANT+mail+";");        
+            PreparedStatement ps = con.prepareStatement(SEARCH_RESTAURANT+ mail+";");        
             rs = ps.executeQuery();
             while(rs.next()){
                  Restaurant rest=new Restaurant();
@@ -289,15 +278,7 @@ public class RestaurantDao {
                 rest.setEmail(rs.getString("EMAIL"));
                 rest.setNumPhone(rs.getString("NUM_PHONE"));
                 rest.setPrixMoyen(rs.getInt("PRIX_MOYEN"));
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                byte[] buf = new byte[1024];
-                InputStream in = rs.getBinaryStream("PHOTO");
-                int n = 0;
-                while ((n=in.read(buf))>=0)
-                {
-                   baos.write(buf, 0, n);
-                }                
-                rest.setPackageBlobRead(baos);
+               
             }
             rs.close();
             con.close();
@@ -319,6 +300,7 @@ public class RestaurantDao {
     public int getNbrOfRestaurantsByUser(String email) throws SQLException{
         Connection con = null;
         ResultSet rs = null;
+        String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1=1";
         int nbrOfRestaurants = 0;
         PreparedStatement ps = con.prepareStatement(SEARCH_RESTAURANT+email+";");
             if(email != null){
