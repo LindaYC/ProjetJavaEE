@@ -7,6 +7,7 @@ package Manager;
 
 import Dao.CategorieDao;
 import Dao.MenuDao;
+import Dao.PlageDao;
 import Dao.ReservationDAO;
 import Dao.RestaurantDao;
 import Dao.UserDao;
@@ -29,6 +30,16 @@ public class ReadManager implements Serializable{
     private CategorieDao categorieDao;
 
     private MenuDao menuDao;
+    private PlageDao plageDao;
+
+    public PlageDao getPlageDao() {
+        return plageDao;
+    }
+
+    public void setPlageDao(PlageDao plageDao) {
+        this.plageDao = plageDao;
+    }
+    
 
     public MenuDao getMenuDao() {
         return menuDao;

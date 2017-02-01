@@ -7,9 +7,12 @@ package Manager;
 
 import Dao.AnnonceDao;
 import Dao.CategorieDao;
+import Dao.PlageDao;
 import Dao.RestaurantDao;
 import Dao.ReservationDAO;
 import Dao.UserDao;
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 import model.Annonce;
 import model.Categorie;
@@ -28,7 +31,18 @@ public class WriteManager {
     private RestaurantDao restaurantDao;
     private AnnonceDao annonceDao;
     private ReservationDAO reservationDao;
+    private PlageDao plageDao;
+  
 
+    public PlageDao getPlageDao() {
+        return plageDao;
+    }
+
+    public void setPlageDao(PlageDao plageDao) {
+        this.plageDao = plageDao;
+    }
+    
+    
     public AnnonceDao getAnnonceDao() {
         return annonceDao;
     }
@@ -121,6 +135,27 @@ public class WriteManager {
 
     public int updateUser(User user) {
         return userDao.updateUser(user);
+    }
+
+    public void reserve(int restaurantSelected, String user, Time heure, Date date, int nbPersonne,int nbPlaceRestante) {
+        java.sql.Date sqlDate =new java.sql.Date(date.getTime());
+        // reservation d'un créneau
+        int idAnnonce = annonceDao.getAnnonceByIdRestaurant(restaurantSelected);
+         
+        if(annonceDao.existPlage(sqlDate,heure,idAnnonce)){
+            // on fait juste un update
+            plageDao.updatePlaceDispo(heure,sqlDate,nbPlaceRestante-nbPersonne);
+        }else{
+            plageDao.addPlage(heure,sqlDate,nbPlaceRestante-nbPersonne);
+            annonceDao.createPlage(idAnnonce,heure,sqlDate);
+            
+        }
+        
+        int idRes=reservationDao.nextVal();
+        reservationDao.createReservation(idRes,idAnnonce);
+        userDao.addReservation(user,idRes);
+        
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

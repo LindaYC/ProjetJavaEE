@@ -31,6 +31,7 @@ public class UserDao {
     private final String SELECT_USER_BY_EMAIL="SELECT * FROM T_USER WHERE MAIL=?";
     private final String SELECT_CONNECTED_USER="SELECT * FROM T_USER WHERE MAIL=? AND PASSWORD=?";
     private final String UPDATE_USER="UPDATE T_USER SET NOM=?, PRENOM=? , PASSWORD=? , TELEPHONE=?, PROFIL=?   WHERE MAIL=?";
+    private final String ADD_RESERVATION="INSERT INTO T_USER_RESERVATION (MAIL,ID_RES) VALUES (?,?)";
 
     
     public void setDataSource(DataSource dataSource){
@@ -304,5 +305,34 @@ public class UserDao {
 			
         }
         return rs;
+    }
+
+    public void addReservation(String user, int idRes) {
+         Connection con = null;
+            int rs=0;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(ADD_RESERVATION);
+            int i=1;
+            ps.setString(i++, user);
+           ps.setInt(i++, idRes);
+            
+            rs = ps.executeUpdate();
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+       
     }
 }

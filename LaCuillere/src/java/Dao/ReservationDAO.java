@@ -156,4 +156,32 @@ public class ReservationDAO {
         return rs;
         
     }
+
+    public void createReservation(int idRes, int idAnnonce) {
+       Connection con = null;
+            int rs=0;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(INSERT_RESERVATION);
+            ps.setInt(1, idRes);
+            ps.setInt(2, idAnnonce);
+            ps.executeUpdate();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RestaurantDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+    
+        
+    }
 }
