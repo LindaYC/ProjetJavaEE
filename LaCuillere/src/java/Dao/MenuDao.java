@@ -29,6 +29,8 @@ public class MenuDao {
     private DataSource dataSource;
     private static final String SELECT_MENU_BY_RESTAURANT="SELECT * FROM T_MENU WHERE ID_MENU IN (SELECT m.ID_MENU FROM T_RESTAURANT_MENU m"
             + " WHERE m.ID_RESTAURANT=?)";
+    private static final String NEXT_VAL="SELECT NEXTVAL('SQ_ID_MENU')";
+    private static final String INSERT_MENU="INSERT INTO T_MENU(ID_MENU,NOM,PRIX,ENTREE,PLAT,DESSERT) VALUES(?,?,?,?,?,?)";
 
     public DataSource getDataSource() {
         return dataSource;
@@ -83,6 +85,68 @@ public class MenuDao {
         }
          
          return result;
+    }
+
+    public int nextVal() {
+        Connection con = null;
+            int rs=0;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(NEXT_VAL);
+            ResultSet resSet = ps.executeQuery();
+            
+            if(resSet.next()){
+                rs=resSet.getInt(1);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RestaurantDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return rs;
+    }
+
+    public void createMenu(Menu menu) {
+         Connection con = null;
+         
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(INSERT_MENU);
+            int i=1;
+            ps.setInt(i++, menu.getIdMenu());
+            ps.setString(i++, menu.getNom());
+            ps.setInt(i++, menu.getPrix());
+            ps.setString(i++, menu.getEntree());
+            ps.setString(i++, menu.getPlat());
+            ps.setString(i++, menu.getDessert());
+            
+            ps.executeUpdate();
+            ps.close();
+            con.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RestaurantDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+       
     }
     
 }

@@ -9,10 +9,12 @@ import Manager.ReadManager;
 import Manager.WriteManager;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
 import javax.servlet.http.HttpSession;
+import model.Restaurant;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +29,9 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
     private User user;
     private String ancien_mail;
     private boolean connected=false;
-    
+    private boolean reservationEnable=true;
+    private boolean restaurantEnable=false;
+    private List<Restaurant> myRestaurants;
     
     
     
@@ -41,6 +45,7 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         user=new User();
         HttpSession session = getHttpSession();
         ancien_mail=(String)session.getAttribute("USER");
+        
     }
 
     public boolean isConnected() {
@@ -58,6 +63,35 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
     public void setUser(User user) {
         this.user = user;
     }
+
+    public boolean isReservationEnable() {
+        return reservationEnable && !user.getProfil();
+    }
+
+    public void setReservationEnable(boolean reservationEnable) {
+        this.reservationEnable = reservationEnable;
+    }
+
+    public List<Restaurant> getMyRestaurants() {
+        if(isRestaurantEnable()){
+           
+            myRestaurants=readManager.getRestaurantByUser(user.getEmail());
+        }
+        return myRestaurants;
+    }
+
+    public void setMyRestaurants(List<Restaurant> myRestaurants) {
+        this.myRestaurants = myRestaurants;
+    }
+
+    
+    public boolean isRestaurantEnable() {
+        return restaurantEnable && user.getProfil();
+    }
+
+    public void setRestaurantEnable(boolean restaurantEnable) {
+        this.restaurantEnable = restaurantEnable;
+    }
     
     
     public boolean validateEmail(){
@@ -71,7 +105,9 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         if(!user.getEmail().equals(ancien_mail) && !validateEmail()) {
             validation=false;
             addError("L'adresse mail que vous avez saisie est liée à un autre profil");
+            
         }
+        
         if(!user.getPassword().equals(user.getPasswordConfirm())){
             validation=false;
             addError("Les deux mots de passe saisis ne sont pas identiques");
@@ -84,6 +120,13 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         HttpSession session = getHttpSession();
         session.setAttribute("USER", user.getEmail());
         session.setAttribute("PROFIL", user.getProfil());
+        if(user.getProfil()){
+            reservationEnable=false;
+            restaurantEnable=true;
+        }else{
+            reservationEnable=true;
+            restaurantEnable=false;
+        }
         try {
         if(res==1){
            
@@ -107,6 +150,14 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
             validation=false;
             addError("Les deux mots de passe saisis ne sont pas identiques");
         }
+        if(user.getProfil()){
+            reservationEnable=false;
+            restaurantEnable=true;
+        }else{
+            reservationEnable=true;
+            restaurantEnable=false;
+        }
+        
         int res=-1;
         if(validation)
         res=writeManager.addUser(user);
@@ -139,6 +190,13 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
                 user=readManager.getUserByMail(user.getEmail());
                 session.setAttribute("USER", user.getEmail());
                 session.setAttribute("PROFIL", user.getProfil());
+                if(user.getProfil()){
+                    reservationEnable=false;
+                    restaurantEnable=true;
+                }else{
+                    reservationEnable=true;
+                    restaurantEnable=false;
+                }
                 ancien_mail=user.getEmail();
                 redirect("espaceClient.xhtml");
             
@@ -162,4 +220,50 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
             Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void showMyRestaurants(){
+        try {
+            reservationEnable=false;
+            restaurantEnable=true;
+            redirect("espaceClient.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mesInformations(){
+        try {
+            redirect("mesInformations.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void showMyReservations(){
+       reservationEnable=true;
+        restaurantEnable=false;
+        try {
+            redirect("espaceClient.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mesReservations(){
+        try {
+            redirect("mesInformations.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void ajoutRestaurant(){
+        try {
+            redirect("ajoutRestaurant.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 }

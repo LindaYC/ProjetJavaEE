@@ -58,6 +58,8 @@
         <property name="restaurantDao" ref="restaurantDao"/>
         <property name="annonceDao" ref="annonceDao"/>
         <property name="plageDao" ref="plageDao"/>
+        <property name="reservationDao" ref="reservationDao"/>
+        <property name="menuDao" ref="menuDao"/>
     </bean>
 
 

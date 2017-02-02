@@ -136,5 +136,9 @@ public class ReadManager implements Serializable{
     public List<Menu> getListMenu(int idRestaurant) {
         return menuDao.loadListMenuByRestaurant(idRestaurant);
     }
+
+    public List<Restaurant> getRestaurantByUser(String email) {
+        return restaurantDao.getRestaurantByUser(email);
+    }
     
 }

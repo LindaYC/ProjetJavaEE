@@ -31,7 +31,9 @@ import model.Restaurant;
 public class RestaurantDao {
     
     private static final String INSERT_RESTAURANT="INSERT INTO T_RESTAURANT(ID_RESTAURANT,NOM,ADRESSE,VILLE,NUM_PHONE,EMAIL,NB_PLACE_MAX,TIME_OUVERTURE,TIME_FERMETURE,CATEGORIE,PHOTO,PRIX_MOYEN) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-    
+    private static final String GET_RESTAURANT_BY_USER="SELECT * FROM T_RESTAURANT WHERE ID_RESTAURANT IN (SELECT tu.ID_RESTAURANT FROM T_USER_RESTAURANT tu"
+            + " WHERE tu.MAIL=?)";
+    private static final String ADD_MENU="INSERT INTO T_RESTAURANT_MENU(ID_RESTAURANT,ID_MENU) VALUES(?,?)";
     private static final String GET__IMAGE_RESTAURANT_BY_ID="SELECT * FROM T_RESTAURANT WHERE ID_RESTAURANT=?";
     private static final String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESTAURANT')";
     private DataSource dataSource;
@@ -256,16 +258,18 @@ public class RestaurantDao {
          
          return result;
     }
-    public List<Restaurant> getRestaurantByUser(/*@RequestParam("id")*/ String mail) throws IOException {
+    public List<Restaurant> getRestaurantByUser(String mail){
         Connection con = null;
-        String SEARCH_RESTAURANT="SELECT * FROM T_RESTAURANT WHERE 1=1";
-        ResultSet rs=null;
+         ResultSet rs=null;
         List<Restaurant> result=new ArrayList<Restaurant>();
          try {              
             con = dataSource.getConnection();
-            PreparedStatement ps = con.prepareStatement(SEARCH_RESTAURANT+ mail+";");        
+            PreparedStatement ps = con.prepareStatement(GET_RESTAURANT_BY_USER);
+            ps.setString(1,mail);
+             
             rs = ps.executeQuery();
             while(rs.next()){
+                
                  Restaurant rest=new Restaurant();
                 rest.setIdRestaurant(rs.getInt("ID_RESTAURANT"));
                 rest.setNom(rs.getString("NOM"));
@@ -278,10 +282,11 @@ public class RestaurantDao {
                 rest.setEmail(rs.getString("EMAIL"));
                 rest.setNumPhone(rs.getString("NUM_PHONE"));
                 rest.setPrixMoyen(rs.getInt("PRIX_MOYEN"));
-               
+                result.add(rest);
             }
             rs.close();
             con.close();
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -310,5 +315,35 @@ public class RestaurantDao {
                 System.out.println("0 restaurants trouvés !");
             
             return nbrOfRestaurants;
+    }
+
+    public void addMenu(int restaurantSelected, int idMenu) {
+        Connection con = null;
+          
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(ADD_MENU);
+            int i=1;
+            ps.setInt(i++,restaurantSelected);
+           
+            ps.setInt(i++,idMenu);
+           
+         
+            ps.executeUpdate();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        
     }
 }

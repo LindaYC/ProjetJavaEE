@@ -20,76 +20,74 @@
             
             <a class="continue"> Mon profil</a>
             <div class="price-details">
-                <p:column><h3><a href="#">Mes reservations</a></h3></p:column>
-                <p:column><h3><a href="#">Mon historique</a></h3></p:column>
-                <p:column rendered="#{userManagedBean.user.profil}"><h3><a href="#">Mes restaurants</a></h3></p:column>
-                <p:column><h3><a  href="mesInformations.xhtml"> Mes informations</a></h3></p:column>
+                <h:form>
+                <p:column><h3><p:commandLink value="Mes reservation" actionListener="#{userManagedBean.showMyReservations()}" /></h3></p:column>
+                <p:column><h3><p:commandLink value="Mes informations"    actionListener="#{userManagedBean.mesInformations()}" /></h3></p:column>
+                <p:column rendered="#{userManagedBean.user.profil}"><h3><p:commandLink value="Mes restaurants" actionListener="#{userManagedBean.showMyRestaurants()}"/></h3></p:column>
+                <p:column rendered="#{userManagedBean.user.profil}"><h3><p:commandLink value="Ajouter un restaurant" actionListener="#{userManagedBean.ajoutRestaurant()}"/></h3></p:column>
                 
+                
+                </h:form>
             </div>	
             <a class="order" href="#">Se deconnecter</a>
         </div>
         <div class="col-md-9 cart-items">
-            <h1>Mes reservations</h1>
-            <script>$(document).ready(function (c) {
-                    $('.close1').on('click', function (c) {
-                        $('.cart-header').fadeOut('slow', function (c) {
-                            $('.cart-header').remove();
-                        });
-                    });
-                });
-            </script>
-
-            <div class="cart-header">
-                <div class="close1" style="margin-top:-5%"> </div>
-                <div class="cart-sec simpleCart_shelfItem">
-                    <div class="cart-item cyc">
-                        <img src="images/GeorgeV-1.jpg" class="img-responsive" alt=""/>
-                    </div>
-                    <div class="cart-item-info" style="margin-top:0%">
-                        <h3><a href="#">Pizza Piave</a><span>1, rue Marechal Foch 75100 Paris</span></h3>
-                        <ul class="qty">
-                            <li>01 Janvier 2017</li>
-                            <li><p>|</p></li>
-                            <li><p>20:00</p></li>
-                            <li><p>|</p></li>
-                            <li><p>3 personnes</p></li>
-                            <li><p>Statut : En cours</p></li>
-                            <li><p>|</p></li>
-                            <li><p>Annuler votre reservation</p></li>
-                        </ul>							
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-
-            <script>$(document).ready(function (c) {
-                    $('.close2').on('click', function (c) {
-                        $('.cart-header2').fadeOut('slow', function (c) {
-                            $('.cart-header2').remove();
-                        });
-                    });
-                });
-            </script>
-            <div class="cart-header">
-                <div class="close1" style="margin-top:-5%"> </div>
-                <div class="cart-sec simpleCart_shelfItem">
-                    <div class="cart-item cyc">
-                        <img src="images/GeorgeV-1.jpg" class="img-responsive" alt=""/>
-                    </div>
-                    <div class="cart-item-info" style="margin-top:0%">
-                        <h3><a href="#">Pizza Piave</a><span>1, rue Marechal Foch 75100 Paris</span></h3>
-                        <ul class="qty">
-                            <li>01 Janvier 2017</li>
-                            <li><p>|</p></li>
-                            <li><p>20:00</p></li>
-                            <li><p>|</p></li>
-                            <li><p>3 personnes</p></li>
-                            <li><p>Statut: En cours</p></li>
-                        </ul>							
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
+            <h:form id="form">
+               <p:dataGrid rendered="#{userManagedBean.restaurantEnable}" var="restaurant" value="#{userManagedBean.getMyRestaurants()}" style="background: none !important; color: #f30 !important;
+    background: none !important;
+    background-image: none !important;" columns="1"  
+        rows="12" paginator="true" id="restaurant"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+        rowsPerPageTemplate="5,10,25,50">
+ 
+                                   <f:facet name="header" >
+            Mes restaurants :
+        </f:facet> 
+ 
+                       
+            
+             <div class="bg-gray restaurant-entry">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
+                                        <div class="entry-logo">
+                                            <p:graphicImage  value="#{listeRestaurantManagedBean.image}">
+                                                <f:param name="idRestaurant" value="#{restaurant.idRestaurant}" />
+                                                </p:graphicImage>
+                                        </div>
+                                        <!-- end:Logo -->
+                                        <div class="entry-dscr">
+                                            <h5><a href="#"><h:outputText value="#{restaurant.nom}" /></a></h5>
+                                            
+                                                
+                                                <h5><a href="#"><h:outputText value="#{restaurant.categorie.nom.toLowerCase()}" /></a></h5> 
+                                            
+                                            <span><a href="#"><h:outputText value="#{restaurant.adresse}" /></a></span>
+                                              
+                                            <ul class="list-inline">
+                                                <li class="list-inline-item"><i class="fa fa-check"></i> Prix moyen <h:outputText value="#{restaurant.prixMoyen}" /> euros</li>
+                                            </ul>
+                                          
+                                        </div>
+                                        <!-- end:Entry description -->
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-4 text-xs-center">
+                                        <div class="right-content bg-white">
+                                            <div class="right-review">
+                                                <div class="rating-block"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </div>
+                                                <p> 150 Avis</p><p:commandButton style="background: none;color:#f30;" styleClass="btn theme-btn-dash" action="#{menuManagedBean.listMenu(restaurant.idRestaurant,restaurant.capacite)}" value="Voir liste Menus"/><br/>
+                                                <p:commandButton style="background: none;color:#f30;" styleClass="btn theme-btn-dash" action="#{menuManagedBean.ajouterMenu(restaurant.idRestaurant)}" value="Ajouter un Menu"/>
+                                            </div>
+                                        </div>
+                                        <!-- end:right info -->
+                                    </div>
+                                </div>
+                                <!--end:row -->
+                            </div>
+          
+ 
+    </p:dataGrid>
+</h:form>
+           
         </div>
         <div class="clearfix"> </div>
     </div>

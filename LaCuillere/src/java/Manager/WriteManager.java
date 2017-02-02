@@ -7,6 +7,7 @@ package Manager;
 
 import Dao.AnnonceDao;
 import Dao.CategorieDao;
+import Dao.MenuDao;
 import Dao.PlageDao;
 import Dao.RestaurantDao;
 import Dao.ReservationDAO;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import model.Annonce;
 import model.Categorie;
+import model.Menu;
 import model.Restaurant;
 import model.User;
 import model.Reservation;
@@ -32,6 +34,8 @@ public class WriteManager {
     private AnnonceDao annonceDao;
     private ReservationDAO reservationDao;
     private PlageDao plageDao;
+    private MenuDao menuDao;
+    
   
 
     public PlageDao getPlageDao() {
@@ -50,8 +54,16 @@ public class WriteManager {
     public void setAnnonceDao(AnnonceDao annonceDao) {
         this.annonceDao = annonceDao;
     }
-    
 
+    public MenuDao getMenuDao() {
+        return menuDao;
+    }
+
+    public void setMenuDao(MenuDao menuDao) {
+        this.menuDao = menuDao;
+    }
+    
+    
     public CategorieDao getCategorieDao() {
         return categorieDao;
     }
@@ -85,6 +97,9 @@ public class WriteManager {
         return reservationDao;
     }
 
+     public void setReservationDao(ReservationDAO resDao) {
+        reservationDao=resDao;
+    }
     /**
      * @return the userDao
      */
@@ -155,7 +170,15 @@ public class WriteManager {
         reservationDao.createReservation(idRes,idAnnonce);
         userDao.addReservation(user,idRes);
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+    }
+
+    public void addMenuToRestaurant(int restaurantSelected, Menu menu) {
+        int idMenu=menuDao.nextVal();
+        menu.setIdMenu(idMenu);
+        menuDao.createMenu(menu);
+        restaurantDao.addMenu(restaurantSelected,idMenu);
+        
     }
     
 }

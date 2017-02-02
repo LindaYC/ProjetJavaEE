@@ -36,20 +36,23 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
     
     private int restaurantSelected;
     private List<Menu> listMenu;
-    private List<Time> heures;
-    private Time heure;
-    private Date date;
+    private List<String> heures;
+    private String heure;
+    private String date;
     private int nbPersonne;
     private int capacite;
+    private Menu menu;
+    
 
     public MenuManagedBean(){
-        heures=new ArrayList<Time>();
-        heures.add(new Time(8,00,00));
-        heures.add(new Time(9,00,00));
-        heures.add(new Time(12,00,00));
-        heures.add(new Time(14,00,00));
-        heures.add(new Time(19,00,00));
-        heures.add(new Time(21,00,00));
+        heures=new ArrayList<String>();
+        heures.add(" 08h:00 ");
+        heures.add(" 09h:00 ");
+        heures.add(" 12h:00 ");
+        heures.add(" 14h:00 ");
+        heures.add(" 19h:00 ");
+        heures.add(" 21h:00 ");
+        menu=new Menu();
     }
     public int getNbPersonne() {
         return nbPersonne;
@@ -58,34 +61,42 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
     public void setNbPersonne(int nbPersonne) {
         this.nbPersonne = nbPersonne;
     }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
     
     
     public int getRestaurantSelected() {
         return restaurantSelected;
     }
 
-    public List<Time> getHeures() {
+    public List<String> getHeures() {
         return heures;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
     
     
-    public void setHeures(List<Time> heures) {
+    public void setHeures(List<String> heures) {
         this.heures = heures;
     }
 
-    public Time getHeure() {
+    public String getHeure() {
         return heure;
     }
 
-    public void setHeure(Time heure) {
+    public void setHeure(String heure) {
         this.heure = heure;
     }
     
@@ -113,17 +124,78 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
             Logger.getLogger(MenuManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public void updateInformation(){
+        // verifiez s'il existe encore des places pour ce créneau
+    }
     public void reserve(){
+        try {
         HttpSession session = getHttpSession();
         String user =(String)session.getAttribute("USER");
-        System.out.println("Debut de Résérvation ");
-        writeManager.reserve(restaurantSelected,user,heure,date,nbPersonne,capacite);
-        try {
+        if(user==null || user.length()==0){
+            addError("Vous devez être connectez pour résérver");
+            
+           // redirect("connectClient.xhtml");
+            return;
+        }
+        if(capacite-nbPersonne<0){
+            addError("Il ne reste plus de place veuillez modifiz votre créneau");
+            
+           // redirect("connectClient.xhtml");
+            return;
+        }
+      //  System.out.println("Debut de Résérvation ");
+        
+        System.err.println("infos : idRestaurant "+restaurantSelected+" user : "+user+" time : "+heure+" date : "+date+" nbPersonne :"
+                +nbPersonne+" capacite : "+capacite);
+        Time time=convertStringToTime(heure);
+        writeManager.reserve(restaurantSelected,user,time,convertDate(date),nbPersonne,capacite);
+   
             redirect("espaceClient.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(MenuManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private Time convertStringToTime(String heure) {
+        Time time= null;
+        switch(heure){
+            case "08h:00" : time = new Time(8,0,0); break;
+            case "09h:00" : time = new Time(9,0,0); break;
+            case "12h:00" : time = new Time(12,0,0); break;
+            case "14h:00" : time = new Time(14,0,0); break;
+            case "19h:00" : time = new Time(19,0,0); break;
+            case "21h:00" : time = new Time(21,0,0); break;
+            
+        };
+        
+        return time;
+    }
+
+    private Date convertDate(String date) {
+        Date result=null;
+        String[] dates=date.split("-");
+        result=new Date(Integer.valueOf(dates[2]),Integer.valueOf(dates[1]), Integer.valueOf(dates[0]));
+        return result;
+    }
+    
+    
+    public void ajouterMenu(int idRestaurant){
+        try {
+            restaurantSelected=idRestaurant;
+            redirect("ajoutMenu.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(MenuManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void addMenu(){
+        try {
+            writeManager.addMenuToRestaurant(restaurantSelected,menu);
+            redirect("espaceClient.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(MenuManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
 }
