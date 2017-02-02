@@ -159,13 +159,13 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
     private Time convertStringToTime(String heure) {
         Time time= null;
         switch(heure){
-            case "08h:00" : time = new Time(8,0,0); break;
-            case "09h:00" : time = new Time(9,0,0); break;
-            case "12h:00" : time = new Time(12,0,0); break;
-            case "14h:00" : time = new Time(14,0,0); break;
-            case "19h:00" : time = new Time(19,0,0); break;
-            case "21h:00" : time = new Time(21,0,0); break;
-            
+            case " 08h:00 " : time = new Time(8,0,0); break;
+            case " 09h:00 " : time = new Time(9,0,0); break;
+            case " 12h:00 " : time = new Time(12,0,0); break;
+            case " 14h:00 " : time = new Time(14,0,0); break;
+            case " 19h:00 " : time = new Time(19,0,0); break;
+            case " 21h:00 " : time = new Time(21,0,0); break;
+            default : time = new Time(19,0,0); break;
         };
         
         return time;

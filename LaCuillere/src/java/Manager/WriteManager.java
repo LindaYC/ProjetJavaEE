@@ -167,7 +167,7 @@ public class WriteManager {
         }
         
         int idRes=reservationDao.nextVal();
-        reservationDao.createReservation(idRes,idAnnonce);
+        reservationDao.createReservation(idRes,idAnnonce,nbPersonne,sqlDate,heure);
         userDao.addReservation(user,idRes);
         
         

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
 import javax.servlet.http.HttpSession;
+import model.Reservation;
 import model.Restaurant;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
     private boolean reservationEnable=true;
     private boolean restaurantEnable=false;
     private List<Restaurant> myRestaurants;
+    private List<Reservation> myReservations;
+    
     
     
     
@@ -47,7 +50,8 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         ancien_mail=(String)session.getAttribute("USER");
         
     }
-
+    
+    
     public boolean isConnected() {
         return connected;
     }
@@ -60,12 +64,24 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         return user;
     }
 
+    public List<Reservation> getMyReservations() {
+        if(reservationEnable){
+            myReservations=readManager.getReservationByUser(user.getEmail());
+        }
+        return myReservations;
+    }
+
+    public void setMyReservations(List<Reservation> myReservations) {
+        this.myReservations = myReservations;
+    }
+
+    
     public void setUser(User user) {
         this.user = user;
     }
 
     public boolean isReservationEnable() {
-        return reservationEnable && !user.getProfil();
+        return reservationEnable;
     }
 
     public void setReservationEnable(boolean reservationEnable) {

@@ -14,7 +14,17 @@ public class Annonce {
     private String numPhone;
     private String email;
     private int idRestaurant;
+    private Restaurant restaurant;
 
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+    
+    
     public int getIdAnnonce() {
         return idAnnonce;
     }

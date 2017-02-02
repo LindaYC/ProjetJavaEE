@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 import model.Categorie;
 import model.Menu;
+import model.Reservation;
 import model.Restaurant;
 import model.User;
 
@@ -139,6 +140,10 @@ public class ReadManager implements Serializable{
 
     public List<Restaurant> getRestaurantByUser(String email) {
         return restaurantDao.getRestaurantByUser(email);
+    }
+
+    public List<Reservation> getReservationByUser(String email) {
+        return reservationDao.getReservationByUser(email);
     }
     
 }

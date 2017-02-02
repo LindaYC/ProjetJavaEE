@@ -5,23 +5,22 @@
  */
 package Dao;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import model.Annonce;
 import model.Categorie;
+import model.Plage;
 import model.Reservation;
+import model.Restaurant;
 
 /**
  *
@@ -29,13 +28,13 @@ import model.Reservation;
  */
 public class ReservationDAO {
     
-    private static final String INSERT_RESERVATION="INSERT INTO T_RESERVATION(ID_RESERVATION, ID_ANNONCE) VALUES (?,?)";
-    private String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESERVATION')";
-    private String SEARCH_RESERVATION = "SELECT * FROM T_RESERVATION, T_USER_RESERVATION, T_ANNONCE_PLAGE, T_ANNONCE " +
-                                        "WHERE T_RESERVATION.ID_RESERVATION = T_USER_RESERVATION.ID_RES " +
-                                        "AND T_RESERVATION.ID_ANNONCE = T_ANNONCE_PLAGE.ID_ANNONCE " +
-                                        "AND T_ANNONCE.ID_ANNONCE = T_ANNONCE_PLAGE.ID_ANNONCE " +
-                                        "AND T_USER_RESERVATION.MAIL = ";
+    private static final String INSERT_RESERVATION="INSERT INTO T_RESERVATION(ID_RESERVATION, ID_ANNONCE,NB_PERSONNE,JOUR,TIME_DEBUT) VALUES (?,?,?,?,?)";
+    private static final String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESERVATION')";
+    private static final String SEARCH_RESERVATION = "SELECT r.ID_RESERVATION, r.NB_PERSONNE, r.JOUR, r.TIME_DEBUT, rest.ID_RESTAURANT, rest.NOM, rest.CATEGORIE, rest.ADRESSE, rest.VILLE "
+            + "FROM T_RESERVATION r, T_RESTAURANT rest, T_USER_RESERVATION ur, T_ANNONCE a " +
+                                        "WHERE ur.MAIL=? AND ur.ID_RES=r.ID_RESERVATION " +
+                                        "AND r.ID_ANNONCE = a.ID_ANNONCE " +
+                                        "AND a.ID_RESTAURANT = rest.ID_RESTAURANT ";
     private DataSource dataSource;
     private int nbrOfReservations;
     
@@ -57,8 +56,8 @@ public class ReservationDAO {
             con = dataSource.getConnection();
             PreparedStatement ps = con.prepareStatement(INSERT_RESERVATION);
             int i=1;
-            ps.setInt(i++, reservation.getID_RESERVATION());
-            ps.setInt(i++, reservation.getID_ANNONCE());
+            ps.setInt(i++, reservation.getIdReservation());
+            ps.setInt(i++, reservation.getIdAnnonce());
             
             rs = ps.executeUpdate();
             ResultSet resSet = ps.getGeneratedKeys();
@@ -66,7 +65,7 @@ public class ReservationDAO {
                 rs=resSet.getInt(1);
             }
             
-            System.out.println("Reservation effectuée : "+reservation.getID_RESERVATION());    
+            System.out.println("Reservation effectuée : "+reservation.getIdReservation());    
             
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,22 +81,38 @@ public class ReservationDAO {
         return rs;
             }
     
-    public List<Reservation> getReservationByUser(/*@RequestParam("id")*/ String mail) {
+    public List<Reservation> getReservationByUser(String mail) {
         Connection con = null;
         ResultSet rs=null;
         List<Reservation> result=new ArrayList<Reservation>();
          try {
             
-            int i=1;        
-            con = dataSource.getConnection();
-            PreparedStatement ps = con.prepareStatement(SEARCH_RESERVATION+mail+";");        
+          con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(SEARCH_RESERVATION);        
+            ps.setString(1, mail);
             rs = ps.executeQuery();
             while(rs.next()){
+                 // r.ID_RESERVATION, r.NB_PERSONNE,r.JOUR,r.TIME_DEBUT, rest.ID_RESTAURANT,rest.NOM,rest.CATEGORIE,rest.ADRESSE,rest.VILLE
                 Reservation rest=new Reservation();
-                rest.setID_RESERVATION(rs.getInt("getID_RESERVATION"));
-                rest.setID_ANNONCE(rs.getInt("getID_ANNONCE"));;
+                rest.setIdReservation(rs.getInt("ID_RESERVATION"));
+                rest.setNbPersonne(rs.getInt("NB_PERSONNE"));
+                Plage p = new Plage();
+                p.setDate(rs.getDate("JOUR"));
+                p.setTimeDebut(rs.getTime("TIME_DEBUT"));
+                rest.setPlage(p);
+                Annonce a = new Annonce();
+                Restaurant restaurant = new Restaurant();
+                a.setRestaurant(restaurant);
+                restaurant.setIdRestaurant(rs.getInt("ID_RESTAURANT"));
+                restaurant.setNom(rs.getString("NOM"));
+                Categorie categorie = new Categorie();
+                categorie.setNom(rs.getString("CATEGORIE"));
+                restaurant.setCategorie(categorie);
+                restaurant.setAdresse(rs.getString("ADRESSE"));
+                restaurant.setVille(rs.getString("VILLE"));
                 result.add(rest);
-                System.out.println("Réservation trouvée : "+rest.getID_RESERVATION());
+                
+                System.out.println("Réservation trouvée : "+rest.getIdReservation());
             }
             rs.close();
             con.close();
@@ -157,15 +172,20 @@ public class ReservationDAO {
         
     }
 
-    public void createReservation(int idRes, int idAnnonce) {
+    public void createReservation(int idRes, int idAnnonce,int nbPersonne,Date date,Time heure) {
        Connection con = null;
             int rs=0;
         
         try {
             con = dataSource.getConnection();
             PreparedStatement ps = con.prepareStatement(INSERT_RESERVATION);
-            ps.setInt(1, idRes);
-            ps.setInt(2, idAnnonce);
+            int i=1;
+            ps.setInt(i++, idRes);
+            ps.setInt(i++, idAnnonce);
+            ps.setInt(i++, nbPersonne);
+            ps.setDate(i++, date);
+            ps.setTime(i++, heure);
+            
             ps.executeUpdate();
             
             

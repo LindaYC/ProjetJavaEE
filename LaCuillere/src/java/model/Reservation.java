@@ -10,35 +10,65 @@ package model;
  * @author MohamedBahaaEddine
  */
 public class Reservation {
-    private int ID_RESERVATION;
-    private int ID_ANNONCE;
+    private int idReservation;
+    private int idAnnonce;
+    private int nbPersonne;
+    private Annonce annonce;
+    private Plage plage;
+    
+    public Plage getPlage() {
+        return plage;
+    }
 
-    public int getID_RESERVATION() {
-        return ID_RESERVATION;
+    public void setPlage(Plage plage) {
+        this.plage = plage;
+    }
+    
+
+    public int getNbPersonne() {
+        return nbPersonne;
+    }
+
+    public void setNbPersonne(int nbPersonne) {
+        this.nbPersonne = nbPersonne;
+    }
+
+    public Annonce getAnnonce() {
+        return annonce;
+    }
+
+    public void setAnnonce(Annonce annonce) {
+        this.annonce = annonce;
+    }
+    
+    
+
+    public int getIdReservation() {
+        return idReservation;
     }
 
     public Reservation() {
     }
 
-    public int getID_ANNONCE() {
-        return ID_ANNONCE;
+    public int getIdAnnonce() {
+        return idAnnonce;
     }
 
-    public void setID_RESERVATION(int ID_RESERVATION) {
-        this.ID_RESERVATION = ID_RESERVATION;
+    public void setIdReservation(int idReservation) {
+        this.idReservation = idReservation;
     }
 
-    public void setID_ANNONCE(int ID_ANNONCE) {
-        this.ID_ANNONCE = ID_ANNONCE;
+    public void setIdAnnonce(int idAnnonce) {
+        this.idAnnonce = idAnnonce;
     }
 
     public Reservation(int ID_RESERVATION, int ID_ANNONCE) {
-        this.ID_RESERVATION = ID_RESERVATION;
-        this.ID_ANNONCE = ID_ANNONCE;
+        this.idReservation = ID_RESERVATION;
+        this.idAnnonce = ID_ANNONCE;
     }
 
     @Override
     public String toString() {
-        return "Reservation{" + "ID_RESERVATION=" + ID_RESERVATION + ", ID_ANNONCE=" + ID_ANNONCE + '}';
+        return "Reservation{" + "ID_RESERVATION=" + idReservation + ", ID_ANNONCE=" + idAnnonce + '}';
     }
 }

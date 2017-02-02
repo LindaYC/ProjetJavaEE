@@ -88,6 +88,60 @@
     </p:dataGrid>
 </h:form>
            
+            <h:form id="form2">
+                <p:dataGrid rendered="#{userManagedBean.reservationEnable}" var="reservation" value="#{userManagedBean.myReservations}" style="background: none !important; color: #f30 !important;
+    background: none !important;
+    background-image: none !important;" columns="1"  
+        rows="12" paginator="true" id="reservation"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+        rowsPerPageTemplate="5,10,25,50">
+ 
+                                   <f:facet name="header" >
+            Mes reservations :
+        </f:facet> 
+ 
+                       
+            
+             <div class="bg-gray restaurant-entry">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
+                                        <div class="entry-logo">
+                                            <p:graphicImage  value="#{listeRestaurantManagedBean.image}">
+                                                <f:param name="idRestaurant" value="#{reservation.annonce.idRestaurant}" />
+                                                </p:graphicImage>
+                                        </div>
+                                        <!-- end:Logo -->
+                                        <div class="entry-dscr">
+                                            <h5><a href="#"><h:outputText value="#{reservation.annonce.restaurant.nom}" /></a></h5>
+                                            
+                                                
+                                                <h5><a href="#"><h:outputText value="#{reservation.annonce.restaurant.categorie.nom.toLowerCase()}" /></a></h5> 
+                                            
+                                            <span><a href="#"><h:outputText value="#{reservation.annonce.restaurant.adresse}" /></a></span>
+                                            
+                                          
+                                        </div>
+                                        <!-- end:Entry description -->
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-4 text-xs-center">
+                                        <div class="right-content bg-white">
+                                            <div class="right-review">
+                                                <div class="rating-block"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </div>
+                                                <h5><a href="#"><h:outputText value="Le #{reservation.plage.date}" /></a></h5><br/>
+                                                <h5><a href="#"><h:outputText value=" à #{reservation.plage.timeDebut}" /></a></h5><br/>
+                                                <h5><a href="#"><h:outputText value="Pour #{reservation.nbPersonne} Personnes" /></a></h5><br/>  
+                                            </div>
+                                        </div>
+                                        <!-- end:right info -->
+                                    </div>
+                                </div>
+                                <!--end:row -->
+                            </div>
+          
+ 
+    </p:dataGrid>
+</h:form>
+          
         </div>
         <div class="clearfix"> </div>
     </div>
