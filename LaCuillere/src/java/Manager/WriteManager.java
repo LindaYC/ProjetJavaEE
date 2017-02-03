@@ -158,9 +158,12 @@ public class WriteManager {
         // reservation d'un créneau
         int idAnnonce = annonceDao.getAnnonceByIdRestaurant(restaurantSelected);
          
-        if(annonceDao.existPlage(sqlDate,heure,idAnnonce,nbPersonne)){
+        if(annonceDao.existPlage(sqlDate,heure,idAnnonce)){
             // on fait juste un update
-            annonceDao.updatePlaceDispo(idAnnonce,heure,sqlDate,nbPlaceRestante-nbPersonne);
+            if(annonceDao.hasPlaces(sqlDate,heure,idAnnonce,nbPersonne))
+                 annonceDao.updatePlaceDispo(idAnnonce,heure,sqlDate,nbPlaceRestante-nbPersonne);
+            else 
+                return;
         }else{
             plageDao.addPlage(heure,sqlDate);
             annonceDao.createPlage(idAnnonce,heure,sqlDate,nbPlaceRestante-nbPersonne);

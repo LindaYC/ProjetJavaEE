@@ -5,6 +5,7 @@
  */
 package Manager;
 
+import Dao.AnnonceDao;
 import Dao.CategorieDao;
 import Dao.MenuDao;
 import Dao.PlageDao;
@@ -12,6 +13,8 @@ import Dao.ReservationDAO;
 import Dao.RestaurantDao;
 import Dao.UserDao;
 import java.io.Serializable;
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 import model.Categorie;
 import model.Menu;
@@ -32,13 +35,22 @@ public class ReadManager implements Serializable{
 
     private MenuDao menuDao;
     private PlageDao plageDao;
-
+    private AnnonceDao annonceDao;
+    
     public PlageDao getPlageDao() {
         return plageDao;
     }
 
     public void setPlageDao(PlageDao plageDao) {
         this.plageDao = plageDao;
+    }
+
+    public AnnonceDao getAnnonceDao() {
+        return annonceDao;
+    }
+
+    public void setAnnonceDao(AnnonceDao annonceDao) {
+        this.annonceDao = annonceDao;
     }
     
 
@@ -144,6 +156,10 @@ public class ReadManager implements Serializable{
 
     public List<Reservation> getReservationByUser(String email) {
         return reservationDao.getReservationByUser(email);
+    }
+
+    public int getPlaceDispo(int restaurantSelected, Time time, Date date){
+       return annonceDao.getPlaceDispo(restaurantSelected,time,new java.sql.Date(date.getTime()));
     }
     
 }

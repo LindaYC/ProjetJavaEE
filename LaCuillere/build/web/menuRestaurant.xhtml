@@ -168,9 +168,9 @@
                                     
                                     <h:panelGrid columns="2" style="margin-bottom:10px;" cellpadding="5">
                                         
-                                        <p:selectOneButton   id="heure" value="#{menuManagedBean.heure}"  onchange="#{menuManagedBean.updateInformation()}">
-                                            
-                                            <f:selectItems value="#{menuManagedBean.heures}" var="heure"  itemLabel="#{heure}" itemValue="#{heure}"/>
+                                        <p:selectOneButton   id="heure2" value="#{menuManagedBean.heure}" >
+                                            <f:ajax listener="#{menuManagedBean.updateInformation()}" event="change" execute="heure date" render=":form:perso" />
+                                            <f:selectItems value="#{menuManagedBean.heures}" var="heure"   id="heure" itemLabel="#{heure}" itemValue="#{heure}"/>
                                         </p:selectOneButton>
                                     </h:panelGrid>
                                     
@@ -179,13 +179,15 @@
                                     <h3 style="color:#f30;">Date<br/></h3>
                                    
                                     <br/>
-                                    <p:inputText type="date" value="#{menuManagedBean.date}"/><br/><br/>
+                                    <p:inputText type="date" value="#{menuManagedBean.date}" id="date" onchange="#{menuManagedBean.updateInformation()}">
+                                        <f:ajax listener="#{menuManagedBean.updateInformation()}" event="change" execute="heure date"  render=":form:perso" />
+                                    </p:inputText><br/><br/>
                                     <br/>
                                     <br/>
-                                    Nombre de personnes: <p:inputText type="text" value="#{menuManagedBean.nbPersonne}" size="2"/><br/><br/>
-                                    <p:outputLabel value="Places disponibles : 20"/><br/><br/>
+                                    Nombre de personnes: <p:inputText type="number" value="#{menuManagedBean.nbPersonne}" style="width: 20%;"  size="2"/><br/><br/>
+                                    <p:outputLabel id="perso" value="Places disponibles : #{menuManagedBean.nbPlaceDispo}"/><br/><br/>
                                     <div style="overflow:hidden;">
-                                        <p:commandButton value="Confirmer" actionListener="#{menuManagedBean.reserve()}" ajax="false" update="form:message" style="background-color:#f30; color:white;"/>
+                                        <p:commandButton value="Confirmer" actionListener="#{menuManagedBean.reserve()}" ajax="true" update="form:message" style="background-color:#f30; color:white;"/>
                                              
                             </div>
                           </h:form>

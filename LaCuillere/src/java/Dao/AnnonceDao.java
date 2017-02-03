@@ -25,9 +25,13 @@ public class AnnonceDao {
      private final static String INSERT_ANNONCE="INSERT INTO T_ANNONCE(ID_ANNONCE,NUM_PHONE,EMAIL,ID_RESTAURANT) VALUES(?,?,?,?)";
      private final static String NEXT_VAL="SELECT NEXTVAL('SQ_ID_ANNONCE')";
      private final static String GET_ID_ANNONCE_BY_ID_RESTAURANT="SELECT ID_ANNONCE FROM T_ANNONCE WHERE ID_RESTAURANT=?";
-     private final static String EXIST_PLAGE="SELECT * FROM T_ANNONCE_PLAGE WHERE ID_ANNONCE = ? AND JOUR = ? AND TIME_DEBUT=? AND NB_PLACE_DISPO >= ?";
+     private final static String EXIST_PLAGE="SELECT * FROM T_ANNONCE_PLAGE WHERE ID_ANNONCE = ? AND JOUR = ? AND TIME_DEBUT=? ";
+      private final static String HAS_PLACES="SELECT * FROM T_ANNONCE_PLAGE WHERE ID_ANNONCE = ? AND JOUR = ? AND TIME_DEBUT=? AND NB_PLACE_DISPO >= ?";
+     
      private final static String INSERT_PLAGE="INSERT INTO T_ANNONCE_PLAGE(JOUR,TIME_DEBUT,ID_ANNONCE,NB_PLACE_DISPO) VALUES(?,?,?,?)";
-     private final static String UPDATE_PLAGE="UPDATE T_ANNONCE_PLAGE SET NB_PLACE_DISPO=? WHERE ID_ANNONCE=? ,JOUR=? ,TIME_DEBUT=?";
+     private final static String UPDATE_PLAGE="UPDATE T_ANNONCE_PLAGE SET NB_PLACE_DISPO=? WHERE ID_ANNONCE=? AND JOUR=? AND TIME_DEBUT=?";
+     private final static String GET_NB_PLACE_DISPO="SELECT ap.NB_PLACE_DISPO FROM T_ANNONCE a, T_ANNONCE_PLAGE ap WHERE a.ID_RESTAURANT= ? "
+             + "AND ap.ID_ANNONCE=a.ID_ANNONCE AND ap.JOUR=? AND ap.TIME_DEBUT=? ";
      
      public int createAnnonce(Annonce annonce){
          int res=0;
@@ -130,7 +134,7 @@ public class AnnonceDao {
         return rs;
     }
 
-    public boolean existPlage(Date sqlDate, Time heure, int idAnnonce,int nbPersonne) {
+    public boolean existPlage(Date sqlDate, Time heure, int idAnnonce) {
         Connection con = null;
             boolean rs=false;
         
@@ -140,7 +144,7 @@ public class AnnonceDao {
             ps.setInt(1, idAnnonce);
             ps.setDate(2, sqlDate);
             ps.setTime(3, heure);
-            ps.setInt(4, nbPersonne);
+           
             ResultSet resSet = ps.executeQuery();
             
             if(resSet.next()){
@@ -229,6 +233,71 @@ public class AnnonceDao {
         }
        
     }
-    
+
+    public int getPlaceDispo(int restaurantSelected, Time time, Date date) {
+        
+    Connection con = null;
+            int rs=-1;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(GET_NB_PLACE_DISPO);
+            ps.setInt(1,restaurantSelected);
+            ps.setDate(2, date);
+            ps.setTime(3, time);
+            ResultSet resSet = ps.executeQuery();
+            
+            if(resSet.next()){
+                rs=resSet.getInt("NB_PLACE_DISPO");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return rs;
+    }
+
+    public boolean hasPlaces(Date sqlDate, Time heure, int idAnnonce, int nbPersonne) {
+               Connection con = null;
+            boolean rs=false;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(HAS_PLACES);
+            ps.setInt(1, idAnnonce);
+            ps.setDate(2, sqlDate);
+            ps.setTime(3, heure);
+            ps.setInt(4, nbPersonne);
+            ResultSet resSet = ps.executeQuery();
+            
+            if(resSet.next()){
+                rs=true;
+            }
+            
+           
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        return rs;
+    }
     
 }

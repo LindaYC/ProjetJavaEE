@@ -44,6 +44,9 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
     private int nbPersonne;
     private int capacite;
     private Menu menu;
+   
+    private int nbPlaceDispo;
+    
     
 
     public MenuManagedBean(){
@@ -60,9 +63,27 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
         return nbPersonne;
     }
 
+    public int getNbPlaceDispo() {
+        return nbPlaceDispo;
+    }
+
+    public void setNbPlaceDispo(int nbPlaceDispo) {
+        this.nbPlaceDispo = nbPlaceDispo;
+    }
+
     public void setNbPersonne(int nbPersonne) {
         this.nbPersonne = nbPersonne;
     }
+
+    public int getCapacite() {
+        return capacite;
+    }
+
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
+    }
+
+   
 
     public Menu getMenu() {
         return menu;
@@ -119,6 +140,7 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
     public void listMenu(int idRestaurant,int cap){
         restaurantSelected=idRestaurant;
         capacite=cap;
+        nbPlaceDispo=cap;
         listMenu=readManager.getListMenu(idRestaurant);
         try {
             redirect("menuRestaurant.xhtml");
@@ -127,8 +149,17 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
         }
     }
     public void updateInformation(){
-        // verifiez s'il existe encore des places pour ce créneau
+       Time time =null;
+        if(heure!=null && !heure.equals("") && date!=null && !date.equals("")){
+            time= convertStringToTime(heure);
+            nbPlaceDispo=readManager.getPlaceDispo(restaurantSelected,time,convertDate(date));
+            if(nbPlaceDispo<0) nbPlaceDispo=capacite;
+        }
+        if(nbPlaceDispo<nbPersonne && nbPlaceDispo>=0){
+            addError("Attention il ne reste plus que :"+nbPlaceDispo+" places");
+        }
     }
+
     public void reserve(){
         try {
         HttpSession session = getHttpSession();
@@ -139,7 +170,14 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
            // redirect("connectClient.xhtml");
             return;
         }
-        if(capacite-nbPersonne<0){
+        
+         if(nbPersonne<=0){
+            addError("Vous devez Selectionner le nombre de personne");
+            
+           // redirect("connectClient.xhtml");
+            return;
+        }
+        if(nbPlaceDispo-nbPersonne<0){
             addError("Il ne reste plus de place veuillez modifiz votre créneau");
             
            // redirect("connectClient.xhtml");
@@ -151,9 +189,7 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
                 +nbPersonne+" capacite : "+capacite);
         Time time=convertStringToTime(heure);
         
-        System.err.println("infos AVEC date converti: idRestaurant "+restaurantSelected+" user : "+user+" time : "+heure+" date : "+convertDate(date)+" nbPersonne :"
-                +nbPersonne+" capacite : "+capacite);
-        writeManager.reserve(restaurantSelected,user,time,convertDate(date),nbPersonne,capacite);
+      writeManager.reserve(restaurantSelected,user,time,convertDate(date),nbPersonne,nbPlaceDispo);
    
             redirect("espaceClient.xhtml");
         } catch (IOException ex) {
@@ -191,8 +227,9 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
     }
     
     
-    public void ajouterMenu(int idRestaurant){
+    public void ajouterMenu(int idRestaurant,int cap){
         try {
+            capacite=cap;
             restaurantSelected=idRestaurant;
             redirect("ajoutMenu.xhtml");
         } catch (IOException ex) {

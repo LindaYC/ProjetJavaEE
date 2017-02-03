@@ -47,6 +47,7 @@
       <property name="reservationDao" ref="reservationDao"/>
       <property name="menuDao" ref="menuDao"/>
       <property name="plageDao" ref="plageDao"/>
+      <property name="annonceDao" ref="annonceDao"/>
       
      
         
