@@ -153,6 +153,7 @@ public class WriteManager {
     }
 
     public void reserve(int restaurantSelected, String user, Time heure, Date date, int nbPersonne,int nbPlaceRestante) {
+        
         java.sql.Date sqlDate =new java.sql.Date(date.getTime());
         // reservation d'un créneau
         int idAnnonce = annonceDao.getAnnonceByIdRestaurant(restaurantSelected);

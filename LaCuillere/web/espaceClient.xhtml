@@ -107,7 +107,7 @@
                                     <div class="col-sm-12 col-md-12 col-lg-8 text-xs-center text-sm-left">
                                         <div class="entry-logo">
                                             <p:graphicImage  value="#{listeRestaurantManagedBean.image}">
-                                                <f:param name="idRestaurant" value="#{reservation.annonce.idRestaurant}" />
+                                                <f:param name="idRestaurant" value="#{reservation.annonce.restaurant.idRestaurant}" />
                                                 </p:graphicImage>
                                         </div>
                                         <!-- end:Logo -->
@@ -126,7 +126,7 @@
                                     <div class="col-sm-12 col-md-12 col-lg-4 text-xs-center">
                                         <div class="right-content bg-white">
                                             <div class="right-review">
-                                                <div class="rating-block"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> </div>
+                                                <h5><a href="#"><h:outputText value="Reservation confirmée pour " /></a></h5><br/>
                                                 <h5><a href="#"><h:outputText value="Le #{reservation.plage.date}" /></a></h5><br/>
                                                 <h5><a href="#"><h:outputText value=" à #{reservation.plage.timeDebut}" /></a></h5><br/>
                                                 <h5><a href="#"><h:outputText value="Pour #{reservation.nbPersonne} Personnes" /></a></h5><br/>  

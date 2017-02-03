@@ -11,6 +11,8 @@ import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,6 +150,9 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
         System.err.println("infos : idRestaurant "+restaurantSelected+" user : "+user+" time : "+heure+" date : "+date+" nbPersonne :"
                 +nbPersonne+" capacite : "+capacite);
         Time time=convertStringToTime(heure);
+        
+        System.err.println("infos AVEC date converti: idRestaurant "+restaurantSelected+" user : "+user+" time : "+heure+" date : "+convertDate(date)+" nbPersonne :"
+                +nbPersonne+" capacite : "+capacite);
         writeManager.reserve(restaurantSelected,user,time,convertDate(date),nbPersonne,capacite);
    
             redirect("espaceClient.xhtml");
@@ -172,10 +177,17 @@ public class MenuManagedBean extends ParentManagedBean implements Serializable{
     }
 
     private Date convertDate(String date) {
-        Date result=null;
-        String[] dates=date.split("-");
-        result=new Date(Integer.valueOf(dates[2]),Integer.valueOf(dates[1]), Integer.valueOf(dates[0]));
-        return result;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        
+        Date dateTime=null;
+        try {
+            dateTime = formatter.parse(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return dateTime;
     }
     
     

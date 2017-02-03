@@ -103,6 +103,7 @@ public class ReservationDAO {
                 Annonce a = new Annonce();
                 Restaurant restaurant = new Restaurant();
                 a.setRestaurant(restaurant);
+                
                 restaurant.setIdRestaurant(rs.getInt("ID_RESTAURANT"));
                 restaurant.setNom(rs.getString("NOM"));
                 Categorie categorie = new Categorie();
@@ -110,6 +111,7 @@ public class ReservationDAO {
                 restaurant.setCategorie(categorie);
                 restaurant.setAdresse(rs.getString("ADRESSE"));
                 restaurant.setVille(rs.getString("VILLE"));
+                rest.setAnnonce(a);
                 result.add(rest);
                 
                 System.out.println("Réservation trouvée : "+rest.getIdReservation());
