@@ -41,7 +41,17 @@
                                                     
                                                         <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <p:inputText type="text" styleClass="form-control" id="categorie" value="#{listeRestaurantManagedBean.categorieSelected}" placeholder="categorie : Pizza,Indien,Japonais" style="height: 42px"/>
+                                                        <select id="guest" name="cat" class="form-control" style="height: 42px">
+                                                            <ui:repeat value="#{listeRestaurantManagedBean.categories}" var="categorie" >
+                                                                <option value="#{categorie.nom}">#{categorie.nom}</option>
+                                                                
+                                                                
+                                                                
+                                                        </ui:repeat>
+                                                         
+                                                      </select>
+                                                        
+                                                       
                                                     </div>
                                                   </div>
                                                 

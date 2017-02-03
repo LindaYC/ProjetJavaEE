@@ -115,19 +115,6 @@ public class ReadManager implements Serializable{
 
     public List<Restaurant> search(String nom, String ville, String categorieSelected) {
        
-        String categorie="";
-        List<Categorie> categories = categorieDao.loadAll();
-        
-        for(Categorie cat : categories){
-            
-            
-            if(cat.getNom().toUpperCase().equals(categorieSelected.toUpperCase())){
-                categorie=cat.getNom().toUpperCase();
-            }
-    }
-        if(categorie.length()==0){
-            categorie=null;
-        }
         if(ville!=null && ville.length()==0){
             ville=null;
         }
@@ -135,7 +122,7 @@ public class ReadManager implements Serializable{
             nom=null;
         }
 
-        return restaurantDao.search(nom,ville,categorie);
+        return restaurantDao.search(nom,ville,categorieSelected);
     }
 
     public User getUserByMail(String email) {

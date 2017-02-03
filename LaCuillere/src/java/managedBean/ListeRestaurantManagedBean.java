@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import model.Categorie;
 import model.Restaurant;
 import org.primefaces.model.DefaultStreamedContent;
@@ -32,7 +34,7 @@ public class ListeRestaurantManagedBean extends ParentManagedBean implements Ser
     private String categorieSelected;
     private String nom;
     private String ville;
-    private List<String> categories;
+    private List<Categorie> categories;
     private List<Restaurant> listeRestaurantSearch;
     
     
@@ -72,22 +74,21 @@ public class ListeRestaurantManagedBean extends ParentManagedBean implements Ser
         this.ville = ville;
     }
 
-    public List<String> getCategories() {
+    public List<Categorie> getCategories() {
         if(categories==null){
-             categories=new ArrayList<String>();
-            for(Categorie cat : readManager.loadAllCategorie()){
-                System.out.println("Liste des categorie :"+cat.getNom());
-                categories.add(cat.getNom());
-            }
+             categories= readManager.loadAllCategorie();
         }
         return categories;
     }
 
-    public void setCategories(List<String> categories) {
+    public void setCategories(List<Categorie> categories) {
         this.categories = categories;
     }
     
     public void search(){
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        
+        categorieSelected=(String)request.getParameter("cat");
         listeRestaurantSearch=readManager.search(nom,ville,categorieSelected);
         
         try {
