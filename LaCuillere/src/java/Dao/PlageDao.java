@@ -23,7 +23,7 @@ public class PlageDao {
     private DataSource dataSource;
     
     private static final String UPDATE_PLACE_DISPO="UPDATE T_PLAGE SET NB_PLACE_DISPO=? WHERE JOUR=? AND TIME_DEBUT=?";
-    private static final String INSERT_LINE="INSERT INTO T_PLAGE (JOUR,TIME_DEBUT,NB_PLACE_DISPO) VALUES(?,?,?)";
+    private static final String INSERT_LINE="INSERT INTO T_PLAGE (JOUR,TIME_DEBUT) VALUES(?,?)";
 
     public DataSource getDataSource() {
         return dataSource;
@@ -65,7 +65,7 @@ public class PlageDao {
         
     }
 
-    public void addPlage(Time heure, Date sqlDate, int nbPlace) {
+    public void addPlage(Time heure, Date sqlDate) {
         Connection con = null;
           
         
@@ -75,7 +75,7 @@ public class PlageDao {
             
             ps.setDate(1, sqlDate);
             ps.setTime(2, heure);
-            ps.setInt(3, nbPlace);
+          
              ps.executeUpdate();
             
             
