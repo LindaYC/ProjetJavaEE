@@ -36,6 +36,15 @@ public class Restaurant {
     private int prixMoyen;
     private FileInputStream  packageBlob;
     private ByteArrayOutputStream packageBlobRead;
+    private boolean enable;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
 
     public ByteArrayOutputStream getPackageBlobRead() {
         return packageBlobRead;

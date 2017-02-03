@@ -130,6 +130,7 @@
                                                 <h5><a href="#"><h:outputText value="Le #{reservation.plage.date}" /></a></h5><br/>
                                                 <h5><a href="#"><h:outputText value=" à #{reservation.plage.timeDebut}" /></a></h5><br/>
                                                 <h5><a href="#"><h:outputText value="Pour #{reservation.nbPersonne} Personnes" /></a></h5><br/>  
+                                                <p:commandButton style="background: none;color:#f30;" styleClass="btn theme-btn-dash" action="#{userManagedBean.deleteReservation(reservation) }" value="Supprimer"/>
                                             </div>
                                         </div>
                                         <!-- end:right info -->

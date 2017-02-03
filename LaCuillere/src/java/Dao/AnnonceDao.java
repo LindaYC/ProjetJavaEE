@@ -234,7 +234,7 @@ public class AnnonceDao {
        
     }
 
-    public int getPlaceDispo(int restaurantSelected, Time time, Date date) {
+    public int getPlaceDispo(int idRestaurant, Time time, Date date) {
         
     Connection con = null;
             int rs=-1;
@@ -242,7 +242,7 @@ public class AnnonceDao {
         try {
             con = dataSource.getConnection();
             PreparedStatement ps = con.prepareStatement(GET_NB_PLACE_DISPO);
-            ps.setInt(1,restaurantSelected);
+            ps.setInt(1,idRestaurant);
             ps.setDate(2, date);
             ps.setTime(3, time);
             ResultSet resSet = ps.executeQuery();

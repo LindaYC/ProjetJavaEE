@@ -184,5 +184,13 @@ public class WriteManager {
         restaurantDao.addMenu(restaurantSelected,idMenu);
         
     }
+
+    public void deleteReservation(Reservation res) {
+        // on change le flag de reservation a false
+        reservationDao.deleteReservation(res.getIdReservation());
+        // on libéère les places dans ANNONCE_PLAGE
+        int nbPlaceDispo=annonceDao.getPlaceDispo(res.getAnnonce().getRestaurant().getIdRestaurant(), res.getPlage().getTimeDebut(), res.getPlage().getDate());
+        annonceDao.updatePlaceDispo(res.getIdAnnonce(), res.getPlage().getTimeDebut(),res.getPlage().getDate(),nbPlaceDispo+res.getNbPersonne());
+    }
     
 }

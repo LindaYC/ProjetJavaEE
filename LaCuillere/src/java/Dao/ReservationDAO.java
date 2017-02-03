@@ -28,13 +28,15 @@ import model.Restaurant;
  */
 public class ReservationDAO {
     
-    private static final String INSERT_RESERVATION="INSERT INTO T_RESERVATION(ID_RESERVATION, ID_ANNONCE,NB_PERSONNE,JOUR,TIME_DEBUT) VALUES (?,?,?,?,?)";
+    private static final String INSERT_RESERVATION="INSERT INTO T_RESERVATION(ID_RESERVATION, ID_ANNONCE,NB_PERSONNE,JOUR,TIME_DEBUT,DELETED) VALUES (?,?,?,?,?,0)";
     private static final String NEXT_VAL="SELECT NEXTVAL('SQ_ID_RESERVATION')";
+    private static final String DELETE_RESERVATION=" UPDATE T_RESERVATION SET DELETED=1 WHERE ID_RESERVATION=?";
     private static final String SEARCH_RESERVATION = "SELECT r.ID_RESERVATION, r.NB_PERSONNE, r.JOUR, r.TIME_DEBUT, rest.ID_RESTAURANT, rest.NOM, rest.CATEGORIE, rest.ADRESSE, rest.VILLE "
             + "FROM T_RESERVATION r, T_RESTAURANT rest, T_USER_RESERVATION ur, T_ANNONCE a " +
                                         "WHERE ur.MAIL=? AND ur.ID_RES=r.ID_RESERVATION " +
                                         "AND r.ID_ANNONCE = a.ID_ANNONCE " +
-                                        "AND a.ID_RESTAURANT = rest.ID_RESTAURANT ";
+                                        "AND a.ID_RESTAURANT = rest.ID_RESTAURANT "
+                                       + " AND r.DELETED=0 ";
     private DataSource dataSource;
     private int nbrOfReservations;
     
@@ -79,6 +81,37 @@ public class ReservationDAO {
 			
         }
         return rs;
+            }
+    
+    public void deleteReservation(int  idReservation) {
+        
+        Connection con = null;
+            int rs=0;
+        
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(DELETE_RESERVATION);
+            int i=1;
+            ps.setInt(i++, idReservation);
+           
+            
+            rs = ps.executeUpdate();
+            
+            
+        
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (con != null) {
+            try {
+                
+		con.close();
+		} catch (SQLException e) {}
+            }      
+			
+        }
+        
             }
     
     public List<Reservation> getReservationByUser(String mail) {

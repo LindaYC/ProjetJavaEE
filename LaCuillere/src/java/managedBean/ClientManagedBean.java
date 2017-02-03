@@ -281,5 +281,12 @@ public class ClientManagedBean extends ParentManagedBean implements Serializable
         }
     }
     
-    
+    public void deleteReservation(Reservation res){
+        writeManager.deleteReservation(res);
+         try {
+            redirect("espaceClient.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(ClientManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

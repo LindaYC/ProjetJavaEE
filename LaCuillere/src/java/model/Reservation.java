@@ -15,6 +15,16 @@ public class Reservation {
     private int nbPersonne;
     private Annonce annonce;
     private Plage plage;
+    private boolean enable;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+    
     
     public Plage getPlage() {
         return plage;

@@ -145,8 +145,8 @@ public class ReadManager implements Serializable{
         return reservationDao.getReservationByUser(email);
     }
 
-    public int getPlaceDispo(int restaurantSelected, Time time, Date date){
-       return annonceDao.getPlaceDispo(restaurantSelected,time,new java.sql.Date(date.getTime()));
+    public int getPlaceDispo(int idRestaurant, Time time, Date date){
+       return annonceDao.getPlaceDispo(idRestaurant,time,new java.sql.Date(date.getTime()));
     }
     
 }
